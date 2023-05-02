@@ -1,0 +1,10 @@
+{%extends "layout.html"%}
+{%block content%}
+
+{%for item in frogs %}
+    <h2><a href = "/frog/{{item[0]}}"> {{item[1]}}</a></h2><p>{{item[2]}}</p>
+
+{%endfor%}
+
+
+{%endblock%}
