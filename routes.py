@@ -19,6 +19,9 @@ def contact():
 def about():
     return render_template("about.html", title = "about")
 
+@app.route('/locations')
+def about():
+    return render_template("locations.html", title = "Location")
 
 @app.route('/all_frogs')
 def all_frogs():
@@ -39,5 +42,5 @@ def frog(id):
     #cur.execute('SELECT * FROM country WHERE id =?', (countryid[1],))
     #country = cur.fetchall()
     return render_template("frog.html", frog = frog, country = country)
-if __name__ == "__main__":  
+if __name__ == "__main__": 
     app.run(debug=True)
