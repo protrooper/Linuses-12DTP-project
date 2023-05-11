@@ -20,7 +20,7 @@ def about():
     return render_template("about.html", title = "about")
 
 @app.route('/locations')
-def about():
+def locations():
     return render_template("locations.html", title = "Location")
 
 @app.route('/all_frogs')
@@ -39,8 +39,15 @@ def frog(id):
     frog = cur.fetchone()
     cur.execute('SELECT * FROM country WHERE id IN(SELECT cid FROM FrogCountry WHERE fid =?)', (id,))
     country = cur.fetchall()
+    cur.execute('SELECT * FROM prey WHERE id IN(SELECT pid FROM FrogPrey WHERE fid =?)', (id,))
+    prey = cur.fetchall()
+    cur.execute('SELECT * FROM predator WHERE id IN(SELECT pid FROM FrogPredator WHERE fid =?)', (id,))
+    predator = cur.fetchall()
+    cur.execute('SELECT * FROM habitat WHERE id IN(SELECT hid FROM FrogHabitat WHERE fid =?)', (id,))
+    habitat = cur.fetchall()
     #cur.execute('SELECT * FROM country WHERE id =?', (countryid[1],))
     #country = cur.fetchall()
-    return render_template("frog.html", frog = frog, country = country)
+    return render_template("frog.html", frog = frog, country = country, prey = prey, predator = predator, habitat = habitat)
+
 if __name__ == "__main__": 
     app.run(debug=True)
