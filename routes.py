@@ -29,8 +29,10 @@ def all_frogs():
     cur = conn.cursor()
     cur.execute('SELECT * FROM frogs')
     frogs = cur.fetchall()
-    print(frogs)
-    return render_template("all_frogs.html", frogs=frogs)
+
+    sortedFrogs = sorted(frogs, key=lambda frog: frog[1]) 
+    print(sortedFrogs)
+    return render_template("all_frogs.html", frogs=sortedFrogs)
 
 @app.route('/frog/<int:id>')
 def frog(id):
