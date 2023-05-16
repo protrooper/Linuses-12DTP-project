@@ -1,9 +1,33 @@
 from flask import Flask, render_template
 import sqlite3
 
+#import stuff for flask forms
+from flask_bootstrap import Bootstrap5
+
+from flask_wtf import FlaskForm, CSRFProtect
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
+
+
+
 
 app = Flask(__name__)
 
+
+
+import secrets
+foo = secrets.token_urlsafe
+
+app.secret_key = foo
+
+bootstrap = Bootstrap5(app)
+
+crsf = CSRFProtect(app)
+
+#we will use this form to search for a name
+class NameForm(FlaskForm):
+    name = StringField('what country?', validators=[DataRequired(), Length(10, 40)])
+    submit = SubmitField('Submit')
 
 @app.route('/')
 def home():
@@ -19,9 +43,17 @@ def contact():
 def about():
     return render_template("about.html", title = "about")
 
-@app.route('/locations')
+
+
+@app.route('/locations', methods=['GET', 'POST'])
 def locations():
-    return render_template("locations.html", title = "Location")
+    conn = sqlite3.connect('frog.db')
+    cur = conn.cursor()
+    cur.execute('SELECT name FROM country')
+    name = cur.fetchall()
+    form = NameForm()
+
+    return render_template("locations.html", title = "Location", form=form)
 
 @app.route('/all_frogs')
 def all_frogs():
