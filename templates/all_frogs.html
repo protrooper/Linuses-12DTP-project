@@ -1,10 +1,16 @@
 {%extends "layout.html"%}
 {%block content%}
 
-{%for item in frogs %}
-    <h2><a href = "/frog/{{item[0]}}"> {{item[1]}}</a></h2><p>{{item[3]}}</p>
-    <img src = "{{item[2]}}" />
-{%endfor%}
+
+<div class="grid-container">
+    {%for item in frogs %}
+        <div class = "grid-item"> <h2><a href = "/frog/{{item[0]}}"> {{item[1]}}</a></h2><p>{{item[3]}}</p>
+        <img src = "{{item[2]}}" /> </div>
+    {%endfor%}
+
+  </div>
 
 
+
+  
 {%endblock%}
