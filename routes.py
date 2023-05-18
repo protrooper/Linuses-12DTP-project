@@ -1,12 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import sqlite3
 
-#import stuff for flask forms
-from flask_bootstrap import Bootstrap5
-
-from flask_wtf import FlaskForm, CSRFProtect
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired, Length
 
 
 
@@ -15,19 +9,18 @@ app = Flask(__name__)
 
 
 
-import secrets
-foo = secrets.token_urlsafe
 
-app.secret_key = foo
 
-bootstrap = Bootstrap5(app)
+#searches database for frogs which match the searched country
+def getcountries(search):
+    conn = sqlite3.connect('frog.db')
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))', (search,))
+    results = cur.fetchall()
+    conn.close()
+    return results
 
-crsf = CSRFProtect(app)
 
-#we will use this form to search for a name
-class NameForm(FlaskForm):
-    name = StringField('what country?', validators=[DataRequired(), Length(10, 40)])
-    submit = SubmitField('Submit')
 
 @app.route('/')
 def home():
@@ -47,13 +40,14 @@ def about():
 
 @app.route('/locations', methods=['GET', 'POST'])
 def locations():
-    conn = sqlite3.connect('frog.db')
-    cur = conn.cursor()
-    cur.execute('SELECT name FROM country')
-    name = cur.fetchall()
-    form = NameForm()
+    if request.method == "POST":
+        data = dict(request.form)
+        print(data['search'])
+        countries = getcountries(data['search'])
+    else:
+        countries = []
 
-    return render_template("locations.html", title = "Location", form=form)
+    return render_template("locations.html", title = "Location", results = countries)
 
 @app.route('/all_frogs')
 def all_frogs():

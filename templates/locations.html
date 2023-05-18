@@ -2,6 +2,19 @@
 {%block content%}
 
 
-<h1>Locations</h1>
+<form method="post">
+    <input type = "text" name = "search" required>
+    <input type = "submit" value = "Search">
+</form>
 
+{% if results | length != 0 %}
+<table id="test">
+    {%for item in results%}
+    <div class = "grid-item"> <h2><a href = "/frog/{{item[0]}}"> {{item[1]}}</a></h2><p>{{item[3]}}</p>
+    <img src = "{{item[2]}}" /> </div>
+    {% endfor %}
+</table>
+{% else %}
+<div id = "test"> No search results.</div>
+{% endif %}
 {%endblock%}
