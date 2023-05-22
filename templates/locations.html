@@ -3,18 +3,9 @@
 
 
 <form method="post">
-    <input type = "text" name = "search" required>
+    <h2>Country:<input type = "text" name = "search" required maxlength = "20">
     <input type = "submit" value = "Search">
+    </h2>
 </form>
 
-{% if results | length != 0 %}
-<table id="test">
-    {%for item in results%}
-    <div class = "grid-item"> <h2><a href = "/frog/{{item[0]}}"> {{item[1]}}</a></h2><p>{{item[3]}}</p>
-    <img src = "{{item[2]}}" /> </div>
-    {% endfor %}
-</table>
-{% else %}
-<div id = "test"> No search results.</div>
-{% endif %}
 {%endblock%}

@@ -44,10 +44,11 @@ def locations():
         data = dict(request.form)
         print(data['search'])
         countries = getcountries(data['search'])
+        sortedCountries = sorted(countries, key=lambda frog: frog[1]) 
+        return render_template("search.html", title = "search results", frogs=sortedCountries)
     else:
-        countries = []
-
-    return render_template("locations.html", title = "Location", results = countries)
+        sortedCountries = []
+        return render_template("locations.html", title = "Location", results = sortedCountries)
 
 @app.route('/all_frogs')
 def all_frogs():
