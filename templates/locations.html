@@ -3,7 +3,12 @@
 
 
 <form method="post">
-    <h2>Country:<input type = "text" name = "search" required maxlength = "20">
+    <h2>Country:<input list = "countries" name = "search" maxlength = "20" autocomplete="off">
+    <datalist id = "countries">
+        {%for item in countries %}
+            <option value= "{{item[1]}}">
+        {%endfor%}
+    </datalist>
     <input type = "submit" value = "Search">
     </h2>
 </form>

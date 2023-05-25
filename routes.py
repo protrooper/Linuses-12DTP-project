@@ -15,7 +15,7 @@ app = Flask(__name__)
 def getcountries(search):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
-    cur.execute('SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))', (search,))
+    cur.execute('SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))', ('%'+ search+'%',))
     results = cur.fetchall()
     conn.close()
     return results
@@ -43,12 +43,16 @@ def locations():
     if request.method == "POST":
         data = dict(request.form)
         print(data['search'])
-        countries = getcountries(data['search'])
-        sortedCountries = sorted(countries, key=lambda frog: frog[1]) 
-        return render_template("search.html", title = "search results", frogs=sortedCountries)
+        results = getcountries(data['search'])
+        sortedResults = sorted(results, key=lambda frog: frog[1]) 
+        return render_template("search.html", title = "search results", frogs=sortedResults)
     else:
-        sortedCountries = []
-        return render_template("locations.html", title = "Location", results = sortedCountries)
+        sortedResults = []
+        conn = sqlite3.connect('frog.db')
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM country')
+        countries = cur.fetchall()
+        return render_template("locations.html", title = "Location", results = sortedResults, countries=countries)
 
 @app.route('/all_frogs')
 def all_frogs():
