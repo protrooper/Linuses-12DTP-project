@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import sqlite3
 
+import random
 
 
 
@@ -24,8 +25,15 @@ def getcountries(search):
 
 @app.route('/')
 def home():
-    return render_template("home.html", title = "Home")
-
+    conn = sqlite3.connect('frog.db')
+    cur = conn.cursor()
+    cur.execute('SELECT COUNT(id) FROM frogs')
+    count = cur.fetchone()
+    randomId = random.randint(1, count[0])
+    cur.execute('SELECT * FROM frogs WHERE id=?', (randomId,))
+    frog = cur.fetchone()
+    return render_template("home.html", title = "Home", frog=frog)
+    
 
 @app.route('/contact')
 def contact():
