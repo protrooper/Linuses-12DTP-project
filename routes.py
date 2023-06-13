@@ -29,10 +29,17 @@ def home():
     cur = conn.cursor()
     cur.execute('SELECT COUNT(id) FROM frogs')
     count = cur.fetchone()
-    randomId = random.randint(1, count[0])
-    cur.execute('SELECT * FROM frogs WHERE id=?', (randomId,))
-    frog = cur.fetchone()
-    return render_template("home.html", title = "Home", frog=frog)
+
+    #select random frog to display
+    cur.execute('SELECT id FROM frogs')
+    ids = cur.fetchall()
+    randint = random.choices(ids, k=2)
+    id1 = randint[0]
+    cur.execute('SELECT * FROM frogs WHERE id=?', id1)
+    frog1 = cur.fetchone()
+
+
+    return render_template("home.html", title = "Home", frog=frog1)
     
 
 @app.route('/contact')
@@ -52,7 +59,7 @@ def locations():
         data = dict(request.form)
         print(data['search'])
         results = getcountries(data['search'])
-        sortedResults = sorted(results, key=lambda frog: frog[1]) 
+        sortedResults = sorted(results, key=lambda frog: frog[1]) #sorts results in alphabetical order, based on name
         return render_template("search.html", title = "search results", frogs=sortedResults)
     else:
         sortedResults = []
