@@ -21,7 +21,18 @@ def getcountries(search):
     conn.close()
     return results
 
+#searches database for frogs which match the searched criteria
+def search_frogs(country, location, prey, predator):
+    conn = sqlite3.connect('frog.db')
+    cur = conn.cursor()
 
+    cur.execute("""SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))  
+        AND id IN (SELECT fid FROM FrogHabitat WHERE hid IN (SELECT id FROM habitat WHERE name LIKE?))
+        AND id IN (SELECT fid FROM FrogPrey WHERE pid IN (SELECT id FROM prey WHERE name LIKE?))
+        AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))""",  ('%'+ country+'%', '%'+ location+'%', '%'+ prey+'%', '%'+ predator+'%'))
+    results = cur.fetchall()
+    conn.close()
+    return results
 
 @app.route('/')
 def home():
@@ -38,6 +49,7 @@ def home():
     cur.execute('SELECT * FROM frogs WHERE id=?', id1)
     frog1 = cur.fetchone()
 
+    conn.close()
 
     return render_template("home.html", title = "Home", frog=frog1)
     
@@ -53,32 +65,53 @@ def about():
 
 
 
-@app.route('/locations', methods=['GET', 'POST'])
-def locations():
+@app.route('/explore', methods=['GET', 'POST'])
+def explore():
     if request.method == "POST":
         data = dict(request.form)
-        print(data['search'])
-        results = getcountries(data['search'])
+        
+        results = search_frogs(data['search'], data['habitat'], data['prey'], data['predator'])
         sortedResults = sorted(results, key=lambda frog: frog[1]) #sorts results in alphabetical order, based on name
+
         return render_template("search.html", title = "search results", frogs=sortedResults)
     else:
         sortedResults = []
         conn = sqlite3.connect('frog.db')
         cur = conn.cursor()
+
         cur.execute('SELECT * FROM country')
         countries = cur.fetchall()
-        return render_template("locations.html", title = "Location", results = sortedResults, countries=countries)
+
+        cur.execute('SELECT * FROM habitat')
+        habitats = cur.fetchall()
+
+        cur.execute('SELECT * FROM prey')
+        preys = cur.fetchall()
+
+        cur.execute('SELECT * FROM predator')
+        predators = cur.fetchall()
+
+        conn.close()
+        return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats = habitats, preys=preys, predators=predators)
+
+
 
 @app.route('/all_frogs')
 def all_frogs():
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
+
     cur.execute('SELECT * FROM frogs')
     frogs = cur.fetchall()
 
-    sortedFrogs = sorted(frogs, key=lambda frog: frog[1]) 
+    sortedFrogs = sorted(frogs, key=lambda frog: frog[1]) #sort in alphabetical order
     print(sortedFrogs)
+
+    conn.close()
+
     return render_template("all_frogs.html", frogs=sortedFrogs)
+
+
 
 @app.route('/frog/<int:id>')
 def frog(id):
@@ -100,7 +133,11 @@ def frog(id):
     cur.execute('SELECT * FROM habitat WHERE id IN(SELECT hid FROM FrogHabitat WHERE fid =?)', (id,))
     habitat = cur.fetchall()
 
+    conn.close()
+
     return render_template("frog.html", frog = frog, country = country, prey = prey, predator = predator, habitat = habitat)
+
+
 
 if __name__ == "__main__": 
     app.run(debug=True)
