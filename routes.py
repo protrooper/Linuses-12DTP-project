@@ -139,34 +139,34 @@ def frog(id):
 
     return render_template("frog.html", frog = frog, country = country, prey = prey, predator = predator, habitat = habitat)
 
-@app.route('/insert')
+@app.route('/insert', methods=['GET', 'POST'])
 def insert():
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
+    cur.execute('SELECT * FROM frogs')
+    frogs = cur.fetchall()
+
+    cur.execute('SELECT * FROM country')
+    countries = cur.fetchall()
+
+    cur.execute('SELECT * FROM habitat')
+    habitats = cur.fetchall()
+
+    cur.execute('SELECT * FROM prey')
+    preys = cur.fetchall()
+
+    cur.execute('SELECT * FROM predator')
+    predators = cur.fetchall()
+
+    conn.close() 
+
     if request.method == "POST":
-        data = dict(request.form)
-        
-        insertdata() #insert data
+        print(request.form.getlist('country'))
+
+        #insertdata() #insert data
+        return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats = habitats, preys=preys, predators=predators)
     else:
-        sortedResults = []
-        conn = sqlite3.connect('frog.db')
-        cur = conn.cursor()
-
-        cur.execute('SELECT * FROM country')
-        countries = cur.fetchall()
-
-        cur.execute('SELECT * FROM habitat')
-        habitats = cur.fetchall()
-
-        cur.execute('SELECT * FROM prey')
-        preys = cur.fetchall()
-
-        cur.execute('SELECT * FROM predator')
-        predators = cur.fetchall()
-
-        conn.close()
-        
-        return render_template("insert_data.html", title="insert_data", results=sortedResults, countries=countries, habitats = habitats, preys=preys, predators=predators)
+        return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats = habitats, preys=preys, predators=predators)
 
 if __name__ == "__main__": 
     app.run(debug=True)

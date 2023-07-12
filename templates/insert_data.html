@@ -3,25 +3,32 @@
 
 
 <form method="post">
-    <h2>Name:<input list = "frogs" name = "search" maxlength = "20" autocomplete="off">
+    <h2>Name:<input list = "frogs" name = "search" maxlength = "20" autocomplete="off"></h2>
         <datalist id = "frogs">
-            <!--list possible search inputs -->
+            <!--list exiisting frog names-->
             {%for item in frogs %}
                 <option value= "{{item[1]}}">
             {%endfor%}
         </datalist>
+        
 
-    <h2>Country:<input list = "countries" name = "search" maxlength = "20" autocomplete="off">
-    <datalist id = "countries">
-        <!--list possible search inputs -->
-        {%for item in countries %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>
+    <h2>Countries: <button type="button" onclick="addCountry()">Add</button> </h2>
+    <div id="countryFieldContainer">
+        <input list = "countries" name = "country" maxlength = "20" autocomplete="off">
+            <datalist id = "countries">
+                <!--list existing countries that can be used-->
+                {%for item in countries %}
+                    <option value= "{{item[1]}}">
+                {%endfor%}
+            </datalist>
+    </div>
 
+    
+
+    <!--
     <h2>Habitat:<input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off" multiple>
     <datalist id = "habitats">
-        <!--list possible search inputs -->
+        
         {%for item in habitats %}
             <option value= "{{item[1]}}">
         {%endfor%}
@@ -29,7 +36,7 @@
 
     <h2>Prey:<input list = "preys" name = "prey" maxlength = "20" autocomplete="off" multiple>
     <datalist id = "preys">
-        <!--list possible search inputs -->
+        
         {%for item in preys %}
             <option value= "{{item[1]}}">
         {%endfor%}
@@ -37,15 +44,33 @@
 
     <h2>Predator:<input list = "predators" name = "predator" maxlength = "20" autocomplete="off">
     <datalist id = "predators">
-        <!--list possible search inputs -->
+
         {%for item in predators %}
             <option value= "{{item[1]}}">
         {%endfor%}
     </datalist>   
-
+    -->
 
     <input type = "submit" value = "Search">
     </h2>
 </form>
+
+<!--Buttons-->
+<script>
+    var container = document.getElementById("countryFieldContainer");  
+    var countryInput = container.innerHTML //get html of the input we want to copy
+    var removeButton = '<button type="button" onclick="removeInputField(this)">Remove</button>' //html of remove button
+
+    function addCountry() {
+        var field = document.createElement("div"); //create div element that will contain remove button and input field
+        field.innerHTML = countryInput+removeButton;
+        container.appendChild(field);
+    }
+
+    function removeInputField(button) {
+        button.parentNode.parentNode.removeChild(button.parentNode); //delete div element that contains button and input field
+    }
+
+</script>
 
 {%endblock%}
