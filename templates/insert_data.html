@@ -3,14 +3,18 @@
 
 
 <form method="post">
-    <h2>Name:<input list = "frogs" name = "search" maxlength = "20" autocomplete="off"></h2>
+    <h2>Name:<input list = "frogs" name = "name" maxlength = "20" autocomplete="off"></h2>
         <datalist id = "frogs">
             <!--list exiisting frog names-->
             {%for item in frogs %}
                 <option value= "{{item[1]}}">
             {%endfor%}
         </datalist>
+
         
+    <h2>Description:</h2>
+     <textarea name="description" placeholder="description" maxlength="1000" rows="8" cols="125"></textarea>
+
 
     <h2>Countries: <button type="button" onclick="addCountry()">Add</button> </h2>
     <div id="countryFieldContainer">
@@ -23,48 +27,86 @@
             </datalist>
     </div>
 
-    
 
-    <!--
-    <h2>Habitat:<input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off" multiple>
-    <datalist id = "habitats">
-        
-        {%for item in habitats %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>
+    <h2>Habitats: <button type="button" onclick="addHabitat()">Add</button> </h2>
+    <div id="habitatFieldContainer">
+        <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off">
+            <datalist id = "habitats">
+                
+                {%for item in habitats %}
+                    <option value= "{{item[1]}}">
+                {%endfor%}
+            </datalist>
+    </div>
 
-    <h2>Prey:<input list = "preys" name = "prey" maxlength = "20" autocomplete="off" multiple>
-    <datalist id = "preys">
-        
-        {%for item in preys %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>
 
-    <h2>Predator:<input list = "predators" name = "predator" maxlength = "20" autocomplete="off">
-    <datalist id = "predators">
+    <h2>Prey: <button type="button" onclick="addPrey()">Add</button> </h2>
+    <div id="preyFieldContainer">
+        <input list = "preys" name = "prey" maxlength = "20" autocomplete="off">
+            <datalist id = "preys">
+                
+                {%for item in preys %}
+                    <option value= "{{item[1]}}">
+                {%endfor%}
+            </datalist>
+    </div>
 
-        {%for item in predators %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>   
-    -->
 
-    <input type = "submit" value = "Search">
+    <h2>Predators: <button type="button" onclick="addPredator()">Add</button> </h2>
+    <div id="predatorFieldContainer">
+        <input list = "predators" name = "predator" maxlength = "20" autocomplete="off">
+            <datalist id = "predators">
+                
+                {%for item in predators %}
+                    <option value= "{{item[1]}}">
+                {%endfor%}
+            </datalist>
+    </div>
+
+    <input type = "submit" value = "Submit">
     </h2>
 </form>
 
 <!--Buttons-->
 <script>
-    var container = document.getElementById("countryFieldContainer");  
-    var countryInput = container.innerHTML //get html of the input we want to copy
+    var countryContainer = document.getElementById("countryFieldContainer");  
+    var countryInput = countryContainer.innerHTML //get html of the input we want to copy
+
     var removeButton = '<button type="button" onclick="removeInputField(this)">Remove</button>' //html of remove button
+
+    var habitatContainer = document.getElementById("habitatFieldContainer");  
+    var habitatInput = habitatContainer.innerHTML 
+
+    var preyContainer = document.getElementById("preyFieldContainer");  
+    var preyInput = preyContainer.innerHTML 
+
+
+    var predatorContainer = document.getElementById("predatorFieldContainer");  
+    var predatorInput = predatorContainer.innerHTML 
+
 
     function addCountry() {
         var field = document.createElement("div"); //create div element that will contain remove button and input field
         field.innerHTML = countryInput+removeButton;
-        container.appendChild(field);
+        countryContainer.appendChild(field);
+    }
+
+    function addHabitat() {
+        var field = document.createElement("div"); 
+        field.innerHTML = habitatInput+removeButton;
+        habitatContainer.appendChild(field);
+    }
+
+    function addPrey() {
+        var field = document.createElement("div");
+        field.innerHTML = preyInput+removeButton;
+        preyContainer.appendChild(field);
+    }
+
+    function addPredator() {
+        var field = document.createElement("div"); 
+        field.innerHTML = predatorInput+removeButton;
+        predatorContainer.appendChild(field);
     }
 
     function removeInputField(button) {

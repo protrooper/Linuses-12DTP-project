@@ -161,8 +161,8 @@ def insert():
     conn.close() 
 
     if request.method == "POST":
-        print(request.form.getlist('country'))
-
+        print(request.form.get('name'), request.form.get('description'), request.form.getlist('country'), request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
+    
         #insertdata() #insert data
         return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats = habitats, preys=preys, predators=predators)
     else:
