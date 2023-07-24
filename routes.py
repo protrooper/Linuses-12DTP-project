@@ -7,12 +7,23 @@ app = Flask(__name__)
 
 
 #inserts data into database, takes parameters from form
-def insertdata(name, countries, habitats, prey, predators):
+def insertdata(name, image, description, countries, habitats, preys, predators):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
+    picture = ''.join(["/static/images/", image])
     #--insert data
-
+    cur.execute('INSERT INTO frogs (name, image, description) VALUES (?, ?, ?)', (name, picture, description,))
+    conn.commit()
+    for country in countries:
+        cur.execute('INSERT INTO FrogCountry (fid, cid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM country WHERE name=?))', (name, country))
+    for habitat in habitats:
+        cur.execute('INSERT INTO FrogHabitat (fid, hid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM habitat WHERE name=?))', (name, habitat))
+    for prey in preys:
+        cur.execute('INSERT INTO FrogPrey (fid, pid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM prey WHERE name=?))', (name, prey))
+    for predator in predators:
+        cur.execute('INSERT INTO FrogPredator (fid, pid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM predator WHERE name=?))', (name, predator))
+    conn.commit()
     conn.close()
 
 
@@ -101,7 +112,6 @@ def all_frogs():
     frogs = cur.fetchall()
 
     sortedFrogs = sorted(frogs, key=lambda frog: frog[1])  #sort in alphabetical order
-    print(sortedFrogs)
 
     conn.close()
 
@@ -157,8 +167,8 @@ def insert():
     if request.method == "POST":
         print(request.form.get('name'), request.form.get('description'), request.form.getlist('country'), 
         request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
-    
-        #insertdata() #insert data
+
+        insertdata(request.form.get('name'), request.form.get('image'), request.form.get('description'), request.form.getlist('country'), request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
 
     return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats=habitats, preys=preys, predators=predators)
 
