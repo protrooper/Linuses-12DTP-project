@@ -3,27 +3,20 @@ import sqlite3
 
 import random
 
-
-
-
 app = Flask(__name__)
 
 
-
-
+#inserts data into database, takes parameters from form
 def insertdata(name, countries, habitats, prey, predators):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
     #--insert data
 
-    results = cur.fetchall()
     conn.close()
 
 
-
-
-#searches database for frogs which match the searched criteria
+#searches database for frogs which match the searched criteria, takes parameters from form.
 def search_frogs(country, location, prey, predator):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
@@ -31,10 +24,13 @@ def search_frogs(country, location, prey, predator):
     cur.execute('''SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))  
         AND id IN (SELECT fid FROM FrogHabitat WHERE hid IN (SELECT id FROM habitat WHERE name LIKE?))
         AND id IN (SELECT fid FROM FrogPrey WHERE pid IN (SELECT id FROM prey WHERE name LIKE?))
-        AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))''',  ('%'+ country+'%', '%'+ location+'%', '%'+ prey+'%', '%'+ predator+'%'))
+        AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))''',  
+        ('%'+ country+'%', '%'+ location+'%', '%'+ prey+'%', '%'+ predator+'%'))
+
     results = cur.fetchall()
     conn.close()
     return results
+
 
 @app.route('/')
 def home():
@@ -42,11 +38,11 @@ def home():
     cur = conn.cursor()
 
     #select random frog to display
-    cur.execute('SELECT id FROM frogs') #gets list of possible ids that can be used
+    cur.execute('SELECT id FROM frogs')   #gets list of possible ids that can be used
     ids = cur.fetchall()
-    randint = random.choices(ids, k=2) #selects random ids, k= number of ids selected
+    randint = random.choices(ids, k=2)   #selects random ids, k= number of ids selected
     id1 = randint[0]
-    cur.execute('SELECT * FROM frogs WHERE id=?', id1) #select frog which matches the id
+    cur.execute('SELECT * FROM frogs WHERE id=?', id1)   #select frog which matches the id
     frog1 = cur.fetchone()
 
     conn.close()
@@ -64,16 +60,15 @@ def about():
     return render_template("about.html", title = "about")
 
 
-
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():
     if request.method == "POST":
         data = dict(request.form)
         
         results = search_frogs(data['search'], data['habitat'], data['prey'], data['predator'])
-        sortedResults = sorted(results, key=lambda frog: frog[1]) #sorts results in alphabetical order, based on name
+        sortedResults = sorted(results, key=lambda frog: frog[1])  #sorts results in alphabetical order, based on name
 
-        return render_template("search.html", title = "search results", frogs=sortedResults)
+        return render_template("search.html", title="search results", frogs=sortedResults)
 
     else:
         sortedResults = []
@@ -94,8 +89,7 @@ def explore():
 
         conn.close()
         
-        return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats = habitats, preys=preys, predators=predators)
-
+        return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators)
 
 
 @app.route('/all_frogs')
@@ -106,13 +100,12 @@ def all_frogs():
     cur.execute('SELECT * FROM frogs')
     frogs = cur.fetchall()
 
-    sortedFrogs = sorted(frogs, key=lambda frog: frog[1]) #sort in alphabetical order
+    sortedFrogs = sorted(frogs, key=lambda frog: frog[1])  #sort in alphabetical order
     print(sortedFrogs)
 
     conn.close()
 
     return render_template("all_frogs.html", frogs=sortedFrogs)
-
 
 
 @app.route('/frog/<int:id>')
@@ -137,7 +130,8 @@ def frog(id):
 
     conn.close()
 
-    return render_template("frog.html", frog = frog, country = country, prey = prey, predator = predator, habitat = habitat)
+    return render_template("frog.html", frog=frog, country=country, prey=prey, predator=predator, habitat=habitat)
+
 
 @app.route('/insert', methods=['GET', 'POST'])
 def insert():
@@ -161,12 +155,13 @@ def insert():
     conn.close() 
 
     if request.method == "POST":
-        print(request.form.get('name'), request.form.get('description'), request.form.getlist('country'), request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
+        print(request.form.get('name'), request.form.get('description'), request.form.getlist('country'), 
+        request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
     
         #insertdata() #insert data
-        return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats = habitats, preys=preys, predators=predators)
-    else:
-        return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats = habitats, preys=preys, predators=predators)
+
+    return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats=habitats, preys=preys, predators=predators)
+
 
 if __name__ == "__main__": 
     app.run(debug=True)
