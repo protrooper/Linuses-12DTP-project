@@ -3,17 +3,27 @@ import sqlite3
 
 import random
 
+import os 
+
+from werkzeug.utils import secure_filename
+
+
+
+#where uploaded images go
+UPLOAD_FOLDER = 'static/images'
+
 app = Flask(__name__)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 #inserts data into database, takes parameters from form
 def insertdata(name, image, description, countries, habitats, preys, predators):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
-
-    picture = ''.join(["/static/images/", image])
+    
     #--insert data
-    cur.execute('INSERT INTO frogs (name, image, description) VALUES (?, ?, ?)', (name, picture, description,))
+    cur.execute('INSERT INTO frogs (name, image, description) VALUES (?, ?, ?)', (name, image, description,))
     conn.commit()
     for country in countries:
         cur.execute('INSERT INTO FrogCountry (fid, cid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM country WHERE name=?))', (name, country))
@@ -165,10 +175,21 @@ def insert():
     conn.close() 
 
     if request.method == "POST":
-        print(request.form.get('name'), request.form.get('description'), request.form.getlist('country'), 
-        request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
 
-        insertdata(request.form.get('name'), request.form.get('image'), request.form.get('description'), request.form.getlist('country'), request.form.getlist('habitat'), request.form.getlist('prey'), request.form.getlist('predator'))
+        #save image to file
+        image = request.files['image']
+        filename = secure_filename(image.filename) #makes sure filename can be safely stored, and doesn't break the system.
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(path)
+
+        #insert data into database
+        insertdata(request.form.get('name'), 
+            path, 
+            request.form.get('description'), 
+            request.form.getlist('country'), 
+            request.form.getlist('habitat'), 
+            request.form.getlist('prey'), 
+            request.form.getlist('predator'))
 
     return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats=habitats, preys=preys, predators=predators)
 

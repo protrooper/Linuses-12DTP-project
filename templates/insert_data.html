@@ -2,7 +2,7 @@
 {%block content%}
 
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <h2>Name:<input list = "frogs" name = "name" maxlength = "20" autocomplete="off" required></h2>
         <datalist id = "frogs">
             <!--list exiisting frog names-->
@@ -33,7 +33,7 @@
 
     <h2>Habitats: <button type="button" onclick="addHabitat()">Add</button> </h2>
     <div id="habitatFieldContainer">
-        <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off">
+        <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off" required>
             <datalist id = "habitats">
                 
                 {%for item in habitats %}
@@ -45,7 +45,7 @@
 
     <h2>Prey: <button type="button" onclick="addPrey()">Add</button> </h2>
     <div id="preyFieldContainer">
-        <input list = "preys" name = "prey" maxlength = "20" autocomplete="off">
+        <input list = "preys" name = "prey" maxlength = "20" autocomplete="off" required>
             <datalist id = "preys">
                 
                 {%for item in preys %}
@@ -57,7 +57,7 @@
 
     <h2>Predators: <button type="button" onclick="addPredator()">Add</button> </h2>
     <div id="predatorFieldContainer">
-        <input list = "predators" name = "predator" maxlength = "20" autocomplete="off">
+        <input list = "predators" name = "predator" maxlength = "20" autocomplete="off" required>
             <datalist id = "predators">
                 
                 {%for item in predators %}
