@@ -27,34 +27,49 @@ def insertdata(name, image, description, countries, habitats, preys, predators):
     cur.execute('INSERT INTO frogs (name, image, description) VALUES (?, ?, ?)', (name, image, description,))
     conn.commit()
 
-    for country in countries:
-        #check if country exists in db
-        cur.execute('SELECT * FROM country WHERE name =?', (country,))
-        if cur.fetchone() is None:
-            #if country doesn't exist, add new country to db
-            cur.execute('INSERT INTO country (name) VALUES (?)', (country,))
-        cur.execute('INSERT INTO FrogCountry (fid, cid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM country WHERE name=?))', (name, country))
+    insert_into(countries, name, 'country', 'FrogCountry', 'cid', cur)
+    insert_into(habitats, name, 'habitat', 'FrogHabitat', 'hid', cur)
+    insert_into(preys, name, 'country', 'FrogPrey', 'pid', cur)
+    insert_into(predators, name, 'country', 'FrogPredator', 'pid', cur)
+    # for country in countries:
+    #     #check if country exists in db
+    #     cur.execute('SELECT * FROM country WHERE name =?', (country,))
+    #     if cur.fetchone() is None:
+    #         #if country doesn't exist, add new country to db
+    #         cur.execute('INSERT INTO country (name) VALUES (?)', (country,))
+    #     cur.execute('INSERT INTO FrogCountry (fid, cid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM country WHERE name=?))', (name, country))
         
-    for habitat in habitats:
-        cur.execute('SELECT * FROM habitat WHERE name =?', (habitat,))
-        if cur.fetchone() is None:
-            cur.execute('INSERT INTO habitat (name) VALUES (?)', (habitat,))
-        cur.execute('INSERT INTO FrogHabitat (fid, hid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM habitat WHERE name=?))', (name, habitat))
+    # for habitat in habitats:
+    #     cur.execute('SELECT * FROM habitat WHERE name =?', (habitat,))
+    #     if cur.fetchone() is None:
+    #         cur.execute('INSERT INTO habitat (name) VALUES (?)', (habitat,))
+    #     cur.execute('INSERT INTO FrogHabitat (fid, hid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM habitat WHERE name=?))', (name, habitat))
 
-    for prey in preys:
-        cur.execute('SELECT * FROM prey WHERE name =?', (prey,))
-        if cur.fetchone() is None:
-            cur.execute('INSERT INTO prey (name) VALUES (?)', (prey,))
-        cur.execute('INSERT INTO FrogPrey (fid, pid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM prey WHERE name=?))', (name, prey))
+    # for prey in preys:
+    #     cur.execute('SELECT * FROM prey WHERE name =?', (prey,))
+    #     if cur.fetchone() is None:
+    #         cur.execute('INSERT INTO prey (name) VALUES (?)', (prey,))
+    #     cur.execute('INSERT INTO FrogPrey (fid, pid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM prey WHERE name=?))', (name, prey))
 
-    for predator in predators:
-        cur.execute('SELECT * FROM predator WHERE name =?', (predator,))
-        if cur.fetchone() is None:
-            cur.execute('INSERT INTO predator (name) VALUES (?)', (predator,))
-        cur.execute('INSERT INTO FrogPredator (fid, pid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM predator WHERE name=?))', (name, predator))
+    # for predator in predators:
+    #     cur.execute('SELECT * FROM predator WHERE name =?', (predator,))
+    #     if cur.fetchone() is None:
+    #         cur.execute('INSERT INTO predator (name) VALUES (?)', (predator,))
+    #     cur.execute('INSERT INTO FrogPredator (fid, pid) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM predator WHERE name=?))', (name, predator))
 
     conn.commit()
     conn.close()
+
+
+#for inserting data into tables which contain foreign keys. parameters determine which table/s data is inserted into.
+def insert_into(data, frogName, table, jointTable, id, cur):
+    for item in data:
+        #check if data exists in table
+        cur.execute('SELECT * FROM ? WHERE name =?', (table, item,))
+        if cur.fetchone() is None:
+            #if data doesn't exist, add data to table
+            cur.execute('INSERT INTO ? (name) VALUES (?)', (table, item,))
+        cur.execute('INSERT INTO ? (fid, ?) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM ? WHERE name=?))', (jointTable, id, frogName, table, item))
 
 
 #searches database for frogs which match the searched criteria, takes parameters from form.
