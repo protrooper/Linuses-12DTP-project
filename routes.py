@@ -3,7 +3,7 @@ import sqlite3
 import random
 import os 
 from werkzeug.utils import secure_filename
-
+from PIL import Image
 
 #where uploaded images go
 UPLOAD_FOLDER = 'static/images'
@@ -182,15 +182,27 @@ def insert():
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(path)
 
-        #insert data into database
-        insertdata(request.form.get('name'), 
+        status = ""
+
+        # validates image file, https://stackoverflow.com/questions/889333/how-to-check-if-a-file-is-a-valid-image-file
+        try:
+            im=Image.open(path)
+             #insert data into database
+            insertdata(request.form.get('name'), 
             path, 
             request.form.get('description'), 
             request.form.getlist('country'), 
             request.form.getlist('habitat'), 
             request.form.getlist('prey'), 
             request.form.getlist('predator'))
-        return render_template("success.html", title="success")
+            status="success"
+
+        except IOError:
+            #image is invalid
+            status="fail"
+            os.remove(path)
+
+        return render_template("success.html", title=status, status=status)
 
     else:
         return render_template("insert_data.html", title="insert_data", frogs=frogs, countries=countries, habitats=habitats, preys=preys, predators=predators)
