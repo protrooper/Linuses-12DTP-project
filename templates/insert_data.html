@@ -11,6 +11,25 @@
             {%endfor%}
         </datalist>
     
+    <h2>Scientific Name:<input list = "scientific_name" name = "scientificName" maxlength = "30" autocomplete="off" required></h2>
+        <datalist id = "scientific_name">
+            <!--list exiisting frog names-->
+            {%for item in frogs %}
+                <option value= "{{item[4]}}">
+            {%endfor%}
+        </datalist>
+    
+    <h2>Minimum Size (cm):<input type = "number" name = "min_size" min="0" max="50" step="0.1" required></h2>
+
+    <h2>Maximum Size (cm):<input type = "number" name = "max_size" min="0" max="50" step="0.1" required></h2>
+    
+    <h2>Status:<input list = "statuses" name = "status" maxlength = "30" autocomplete="off" required></h2>
+        <datalist id = "statuses">
+            <!--list exiisting frog names-->
+            {%for item in statuses %}
+                <option value= "{{item[1]}}">
+            {%endfor%}
+        </datalist>
 
     <h2>Image:</h2>
     <input type = "file" name = "image" accept=".png, .jpeg" required>
