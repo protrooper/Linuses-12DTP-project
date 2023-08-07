@@ -174,7 +174,7 @@ def frog(id):
 @app.route('/insert', methods=['GET', 'POST'])
 def insert():
     queries = [['SELECT * FROM frogs'],
-               ['SELECT * FROM statuses']
+               ['SELECT * FROM statuses'],
                ['SELECT * FROM country'],
                ['SELECT * FROM habitat'],
                ['SELECT * FROM prey'],
@@ -194,27 +194,39 @@ def insert():
 
         # validates image file, https://stackoverflow.com/questions/889333/how-to-check-if-a-file-is-a-valid-image-file
         try:
+            queries = [['SELECT * FROM frogs WHERE name =?', (request.form.get('name'))],
+                       ['SELECT * FROM frogs WHERE scientific_name =?', request.form.get('scientificName')]]
+            fetchall = [False, False]
+            name, scientificName = fetch_data(queries, fetchall)
+
             im = Image.open(path)
-            # insert data into database
-            insertdata(request.form.get('name'),
-                       request.form.get('scientificName'),
-                       request.form.get('min_size'),
-                       request.form.get('max_size'),
-                       request.form.get('status'),
-                       path,
-                       request.form.get('description'),
-                       request.form.getlist('country'),
-                       request.form.getlist('habitat'),
-                       request.form.getlist('prey'),
-                       request.form.getlist('predator'))
-            status = "success"
+
+            if name is None and scientificName is None:
+                # insert data into database
+                insertdata(request.form.get('name'),
+                           request.form.get('scientificName'),
+                           request.form.get('min_size'),
+                           request.form.get('max_size'),
+                           request.form.get('status'),
+                           path,
+                           request.form.get('description'),
+                           request.form.getlist('country'),
+                           request.form.getlist('habitat'),
+                           request.form.getlist('prey'),
+                           request.form.getlist('predator'))
+                status = "success"
+            else:
+                status = "fail"
+                reason = "Name or Scientific Name already exists!"
+                os.remove(path)
 
         except IOError:
             # image is invalid
             status = "fail"
+            reason = "Invalid Image"
             os.remove(path)
 
-        return render_template("success.html", title=status, status=status)
+        return render_template("success.html", title=status, status=status, reason=reason)
 
     else:
         return render_template("insert_data.html", title="insert_data", frogs=frogs, statuses=statuses, countries=countries, habitats=habitats, preys=preys, predators=predators)
