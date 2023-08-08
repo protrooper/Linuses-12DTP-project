@@ -3,7 +3,7 @@
 
 
 <form method="post" enctype="multipart/form-data">
-    <h2>Name:<input list = "frogs" name = "name" maxlength = "20" autocomplete="off" required></h2>
+    <h2>Name:<input list = "frogs" name = "name" maxlength = "40" autocomplete="off" required></h2>
         <datalist id = "frogs">
             <!--list exiisting frog names-->
             {%for item in frogs %}
@@ -11,7 +11,7 @@
             {%endfor%}
         </datalist>
     
-    <h2>Scientific Name:<input list = "scientific_name" name = "scientificName" maxlength = "30" autocomplete="off" required></h2>
+    <h2>Scientific Name:<input list = "scientific_name" name = "scientificName" maxlength = "40" autocomplete="off" required></h2>
         <datalist id = "scientific_name">
             <!--list exiisting frog names-->
             {%for item in frogs %}
@@ -32,7 +32,7 @@
         </datalist>
 
     <h2>Image:</h2>
-    <input type = "file" name = "image" accept=".png, .jpeg" required>
+    <input type = "file" name = "image" accept=".png, .jpeg, .jpg" required>
         
     <h2>Description:</h2>
      <textarea name="description" placeholder="description" maxlength="1000" rows="8" cols="125"></textarea>
@@ -40,7 +40,7 @@
 
     <h2>Countries: <button type="button" onclick="addCountry()">Add</button> </h2>
     <div id="countryFieldContainer">
-        <input list = "countries" name = "country" maxlength = "20" autocomplete="off">
+        <input list = "countries" name = "country" maxlength = "40" autocomplete="off">
             <datalist id = "countries">
                 <!--list existing countries that can be used-->
                 {%for item in countries %}
@@ -52,7 +52,7 @@
 
     <h2>Habitats: <button type="button" onclick="addHabitat()">Add</button> </h2>
     <div id="habitatFieldContainer">
-        <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off" required>
+        <input list = "habitats" name = "habitat" maxlength = "40" autocomplete="off" required>
             <datalist id = "habitats">
                 
                 {%for item in habitats %}
@@ -64,7 +64,7 @@
 
     <h2>Prey: <button type="button" onclick="addPrey()">Add</button> </h2>
     <div id="preyFieldContainer">
-        <input list = "preys" name = "prey" maxlength = "20" autocomplete="off" required>
+        <input list = "preys" name = "prey" maxlength = "40" autocomplete="off" required>
             <datalist id = "preys">
                 
                 {%for item in preys %}
@@ -76,7 +76,7 @@
 
     <h2>Predators: <button type="button" onclick="addPredator()">Add</button> </h2>
     <div id="predatorFieldContainer">
-        <input list = "predators" name = "predator" maxlength = "20" autocomplete="off" required>
+        <input list = "predators" name = "predator" maxlength = "40" autocomplete="off" required>
             <datalist id = "predators">
                 
                 {%for item in predators %}

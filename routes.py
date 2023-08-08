@@ -179,7 +179,7 @@ def insert():
                ['SELECT * FROM habitat'],
                ['SELECT * FROM prey'],
                ['SELECT * FROM predator']]
-    fetchall = [True, True, True, True, True]
+    fetchall = [True, True, True, True, True, True]
     frogs, statuses, countries, habitats, preys, predators = fetch_data(queries, fetchall)
 
     if request.method == "POST":
@@ -191,11 +191,12 @@ def insert():
         image.save(path)
 
         status = ""
+        reason = ""
 
         # validates image file, https://stackoverflow.com/questions/889333/how-to-check-if-a-file-is-a-valid-image-file
         try:
-            queries = [['SELECT * FROM frogs WHERE name =?', (request.form.get('name'))],
-                       ['SELECT * FROM frogs WHERE scientific_name =?', request.form.get('scientificName')]]
+            queries = [['SELECT * FROM frogs WHERE name =?', (request.form.get('name'),)],
+                       ['SELECT * FROM frogs WHERE scientific_name =?', (request.form.get('scientificName'),)]]
             fetchall = [False, False]
             name, scientificName = fetch_data(queries, fetchall)
 
@@ -219,13 +220,14 @@ def insert():
                 status = "fail"
                 reason = "Name or Scientific Name already exists!"
                 os.remove(path)
-
+            im.close()
         except IOError:
+            im.close()
             # image is invalid
             status = "fail"
             reason = "Invalid Image"
             os.remove(path)
-
+            
         return render_template("success.html", title=status, status=status, reason=reason)
 
     else:
