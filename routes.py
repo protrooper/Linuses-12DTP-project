@@ -216,18 +216,23 @@ def insert():
                            request.form.getlist('prey'),
                            request.form.getlist('predator'))
                 status = "success"
+                im.close()
             else:
                 status = "fail"
                 reason = "Name or Scientific Name already exists!"
-                os.remove(path)
-            im.close()
+                print("name or scientific name already exists")
+            
         except IOError:
-            im.close()
             # image is invalid
             status = "fail"
             reason = "Invalid Image"
+            print("invalid image")
+
+        if status == "fail":
+            im.close()
             os.remove(path)
-            
+
+
         return render_template("success.html", title=status, status=status, reason=reason)
 
     else:
