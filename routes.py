@@ -108,14 +108,16 @@ def home():
     # select random frog to display
     cur.execute('SELECT id FROM frogs')   # gets list of possible ids that can be used
     ids = cur.fetchall()
-    randint = random.choices(ids, k=2)   # selects random ids, k= number of ids selected
-    id1 = randint[0]
-    cur.execute('SELECT * FROM frogs WHERE id=?', id1)   # select frog which matches the id
-    frog1 = cur.fetchone()
+    randint = random.sample(ids, k=3)   # selects random ids, k= number of ids selected
+    
+    id1, id2, id3 = randint
+    print(id1[0], id2[0], id3[0])
+    cur.execute('SELECT * FROM frogs WHERE id=? OR id=? OR id=? ', (id1[0], id2[0], id3[0]))   # select frog which matches the id
+    frogs = cur.fetchall()
 
     conn.close()
 
-    return render_template("home.html", title="Home", frog=frog1)
+    return render_template("home.html", title="Home", frogs=frogs)
 
 
 @app.route('/contact')
