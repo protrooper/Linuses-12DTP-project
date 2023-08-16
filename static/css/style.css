@@ -14,26 +14,115 @@ body {
 
 
 
+/**all_frogs page**/
 
 
-/**NAV BAR**/
+
+.all_frogs {
+    margin: 0;
+    padding: 0;
+    background-image: url("all_frogs_background.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.all_frogs h2 {
+    margin: 0;
+    text-align: left;
+    font-size: 80px;
+    padding-left: 8%;
+    padding-top: 40px;
+}
+
+.back_button {
+    position: relative;
+}
+
+.back_button a {
+    color: #cfcfcf;
+    text-decoration: none;
+    margin-top: 0;
+    margin-left: 9%;
+    padding-top: 20px;
+    font-size: 36px;
+    text-align: left;
+}
+
+.back_button a:hover {
+    color: #ffffff;
+    
+}
+
+.back_button a::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background-color: #cfcfcf;
+    margin-left: 9%;
+
+    position: absolute;
+    bottom:0;
+    width: 0px;
+
+    transition: all ease-in-out 250ms;
+}
+
+.back_button a:hover::before {
+    width: 101px;
+}
+
+
+
+
+
+
+
 
 .grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 5px solid rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  font-size: 30px;
+  background-color: rgb(43, 43, 43);
   text-align: center;
+  transition: all ease-in-out 250ms;
 }
 
 .grid-container {
+    padding: 110px;
     display: grid;
-    grid-template-columns: auto auto auto;
-    background-color: #ffffff;
-    padding: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 380px;
+    grid-auto-rows: 380px;
+    grid-gap: 42px;
+}
+
+.grid-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 68%;
+}
+
+.grid-item a {
+    color: #cfcfcf;
+    text-decoration: none;
+    margin: 0;
+    font-size: 30px;
+    
+}
+
+.grid-item:hover{
+    transform: scale(1.1);
+}
+
+.grid-item h3 {
+    color: #cfcfcf;
+    font-size: 15px;
+    margin-top: 0;
+    font-style: italic;
 }
 
 
+
+/**NAV BAR**/
 
 
   
@@ -88,7 +177,6 @@ nav a::before {
     content: '';
     display: block;
     height: 3px;
-    width: 100%;
     background-color: #cfcfcf;
 
     position: absolute;

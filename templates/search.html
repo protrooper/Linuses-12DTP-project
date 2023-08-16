@@ -1,21 +1,26 @@
 {%extends "layout.html"%}
 {%block content%}
 
-<a href = "/explore"> back</a>
-
-{% if frogs | length != 0 %}
-<div class="grid-container">
-    {%for item in frogs %}
-        <div class = "grid-item"> <h2><a href = "/frog/{{item[0]}}"> {{item[1]}}</a></h2><p>{{item[3]}}</p>
-        <img src = "{{item[2]}}" /> </div>
-    {%endfor%}
-
+<div class = "all_frogs">
+  <h2>Results:</h2>
+  <div class = "back_button">
+    <a href = "javascript:history.back()"> ←Back</a>
+  </div>
+  {% if frogs | length != 0 %}
+  <div class="grid-container">
+      {%for item in frogs %}
+          <div class = "grid-item">
+            <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
+            <a href = "/frog/{{item[0]}}"> {{item[1]}}</a>
+            <h3>{{item[4]}}</h3>
+        </div>
+      {%endfor%}
 
   </div>
-{% else %}
-<div id = "test"> No search results.</div>
-{% endif %}
-
+  {% else %}
+  <h2>No search results.</h2>
+  {% endif %}
+</div>
 
 
   
