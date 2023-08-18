@@ -1,39 +1,65 @@
 {%extends "layout.html"%}
 {%block content%}
 
-<h2>{{frog[1]}}</h2>
-<h2>{{frog[4]}}</h2>
-<p>{{frog[3]}}</p> 
 
-<img src = "{{frog[2]}}" />
+<div class = "title">
+    <h2>{{frog[1]}}</h2>
+    <h3>{{frog[4]}}</h3>
+</div>
 
-{%if frog[5] != 0 %}
-<h2>{{frog[5]}}-{{frog[6]}} cm</h2>
-{%else%}
-<h2>{{frog[6]}} cm</h2>
-{%endif%}
 
-<h2>status: {{status[1]}}</h2>
+<div class = "info_container">
 
-<h2>countries: </h2>
-{%for item in country %}
-    <p>{{item[1]}}</p>
-{%endfor%}
+    <img src = "/{{frog[2]}}" />
+    
+    
 
-<h2>prey:</h2>
-{%for item in prey %}
-    <p>{{item[1]}}</p>
-{%endfor%}
+    <div class = "info">
+        {%if frog[5] != 0 %}
+            <p>size: {{frog[5]}}-{{frog[6]}} cm</p>
+        {%else%}
+            <p>size: {{frog[6]}} cm<p>
+        {%endif%}
 
-<h2>predators:</h2>
-{%for item in predator %}
-    <p>{{item[1]}}</p>
-{%endfor%}
+        <p>status: {{status[1]}}</p>
 
-<h2>habitats:</h2>
-{%for item in habitat %}
-    <p>{{item[1]}}</p>
-{%endfor%}
 
+        <p>
+            countries:
+            {%for item in country %}
+                {{item[1]}}{{ "," if not loop.last }}
+            {%endfor%}
+        </p>
+
+    
+        <p>
+            prey:
+            {%for item in prey %}
+                {{item[1]}}{{ "," if not loop.last }}
+            {%endfor%}
+        </p>
+
+
+        <p>
+            predators:
+            {%for item in predator %}
+                {{item[1]}}{{ "," if not loop.last }}
+            {%endfor%}
+        </p>
+
+    
+        <p>
+            habitats:
+            {%for item in habitat %}
+                {{item[1]}}{{ "," if not loop.last }}
+            {%endfor%}
+        </p>
+
+    </div>
+
+    
+</div>
+
+<p class = "description">{{frog[3]}}</p> 
 
 {%endblock%}

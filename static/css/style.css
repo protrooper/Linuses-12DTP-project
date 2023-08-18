@@ -118,6 +118,7 @@ body {
     font-size: 15px;
     margin-top: 0;
     font-style: italic;
+    font-weight: 3;
 }
 
 
@@ -304,3 +305,49 @@ nav a:hover::before {
     color: white;
 }
 
+/**frog page**/
+
+.info_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-left: 300px;
+    margin-right: 400px;
+    padding: 100px;
+}
+
+.title {
+    text-align: center;
+    padding: 100px;
+}
+
+.title h2 {
+    margin: 0;
+    font-size: 60px;
+}
+
+.title h3 {
+    margin: 6px;
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 2;
+}
+
+.info_container img {
+    width: 500px;
+    height: 400px;
+    float:left
+}
+
+.info{
+    padding-left: 20px;
+    margin-left: 20px;
+}
+
+.info a {
+    font-size: 25px;
+
+}
+
+.description {
+    margin: 100px;
+}
