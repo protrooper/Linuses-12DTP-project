@@ -5,28 +5,229 @@
 body {
     margin: 0;
     padding: 0;
+    min-height: 100vh;
     font-family: "Cormorant garamond", sans-serif;
     font-weight: 300;
-    background-color: rgb(0, 0, 0);
-    color:rgb(255, 255, 255)
+    background: url("background.jpg") center/cover fixed no-repeat;
+    color:rgb(255, 255, 255);
     
+
+    /**make sure footer stays at bottom 
+    https://dev.to/nehalahmadkhan/how-to-make-footer-stick-to-bottom-of-web-page-3i14- **/
+    display: flex;
+    flex-direction: column;
 }
 
 
 
-/**all_frogs page**/
 
 
+/**NAV BAR
+---------------------------------------------------------------**/
 
-.all_frogs {
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #000000;
+}
+
+/**clearfix
+-aligns navbar elements correctly, corrects height of navbar**/
+header::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+
+nav {
+    text-align: center;
+}
+
+nav ul {
     margin: 0;
-    padding: 0;
-    background-image: url("all_frogs_background.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
+    list-style:none;
 }
+
+nav li {
+    display: inline-block;
+    margin-left: 46px;
+    padding: 5px 0;
+    position: relative;
+}
+
+nav a {
+    text-align: center;
+    color: #cfcfcf;
+    text-decoration: none;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+/**link hover animations**/
+
+nav a:hover {
+    color: #ffffff;
+}
+
+nav a::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background-color: #cfcfcf;
+
+    position: absolute;
+    bottom:0;
+    width: 0%;
+
+    transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+    width: 100%;
+}
+
+
+
+
+
+/**FOOTER
+-----------------------------------------------------------------**/
+
+.footer {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #474747;
+    text-align: center;
+    margin: 0;
+    margin-top: auto; /**make sure footer stays at bottom**/
+    padding: 20px;
+}
+
+
+
+
+
+
+/**HOME PAGE
+-----------------------------------------------------------------**/
+
+.home {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0px;
+    background-color: #000000;
+    padding-bottom: 16%;
+}
+
+.main {
+    margin: 0 auto;
+    width: 100%;
+    height: 750px;
+    padding: 0;
+
+    background: linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(17,25,1,0) 66%), url("home_page.jpg") center/cover scroll no-repeat ;
+}
+
+
+.main h2 {
+    padding-top: 135px;
+    padding-left: 30px;
+    margin: 0;
+    text-align: left;
+    font-size: 60px;
+    color: white;
+}
+
+.main h3 {
+    margin: 0 auto;
+    padding: 0;
+    padding-left: 30px;
+    text-align: left;
+    color: white;
+}
+
+.home img {
+    object-fit: cover;
+    width: 100%;
+    height: 70%;
+}
+
+.random_frog_container {
+    padding: 0 150px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 75px;
+    margin: 25px 60px 0px;
+    height: 43vh;
+}
+
+.random_frog_item {
+    background-color: #474747;    
+}
+
+.link_container {
+    position: relative;
+}
+
+.home h4 {
+    margin: 0;
+    padding-top: 0;
+    padding-left: 10px;
+    text-align: left;
+    font-size: 20px;
+}
+
+.home a {
+    padding-left: 15px;
+    text-align: left;
+    color: #cfcfcf;
+    text-decoration: none;
+}
+
+/**"learn more" link hover animation"**/
+
+.home a:hover {
+    color: #ffffff;
+}
+
+.home a::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background-color: #cfcfcf;
+    margin-left: 15px;
+    position: absolute;
+    bottom: 0px;
+    width: 0px;
+
+    transition: all ease-in-out 250ms;
+}
+
+.home a:hover::before {
+    width: 85px;
+}
+
+
+.discover {
+    padding-top: 0px;
+    padding-left: 30px;
+    margin: 0 auto;
+
+    text-align: left;
+    font-size: 55px;
+    color: white;
+}
+
+
+
+
+
+/**all_frogs page
+----------------------------------------------------------------------------**/
 
 .all_frogs h2 {
     margin: 0;
@@ -75,22 +276,21 @@ body {
 
 
 
-
-
-
-
-
 .grid-item {
   background-color: rgb(43, 43, 43);
   text-align: center;
   transition: all ease-in-out 250ms;
 }
 
+/**hover animation**/
+.grid-item:hover{
+    transform: scale(1.1);
+}
+
 .grid-container {
     padding: 110px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 380px;
     grid-auto-rows: 380px;
     grid-gap: 42px;
 }
@@ -109,10 +309,6 @@ body {
     
 }
 
-.grid-item:hover{
-    transform: scale(1.1);
-}
-
 .grid-item h3 {
     color: #cfcfcf;
     font-size: 15px;
@@ -123,196 +319,18 @@ body {
 
 
 
-/**NAV BAR**/
 
 
-  
-
-.container {
-    width: 90%;
-    margin: 0 auto;
-}
-
-header {
-    background-color: #000000;
-}
-
-header::after {
-    content: '';
-    display: table;
-    clear: both;
-}
-
-
-nav {
-    text-align: center;
-}
-
-nav ul {
-    margin: 0;
-    list-style:none;
-}
-
-nav li {
-    display: inline-block;
-    margin-left: 46px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-
-    position: relative;
-}
-
-nav a {
-    text-align: center;
-    color: #cfcfcf;
-    text-decoration: none;
-    font-size: 16px;
-    text-transform: uppercase;
-}
-
-nav a:hover {
-    color: #ffffff;
-}
-
-nav a::before {
-    content: '';
-    display: block;
-    height: 3px;
-    background-color: #cfcfcf;
-
-    position: absolute;
-    bottom:0;
-    width: 0%;
-
-    transition: all ease-in-out 250ms;
-}
-
-nav a:hover::before {
-    width: 100%;
-}
-
-
-
-
-
-/**HOME PAGE**/
-
-.home {
-    margin: 0 auto;
-    padding: 0px;
-    
-}
-
-.main {
-    margin: 0 auto;
-    width: 100%;
-    height: 750px;
-    padding: 0px;
-
-    background: linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(17,25,1,0) 66%), url("home_page.jpg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: scroll;
-    background-size: cover;
-}
-
-
-.main h2 {
-    padding-top: 135px;
-    padding-left: 30px;
-    margin: 0;
-    text-align: left;
-    font-size: 60px;
-    color: white;
-}
-
-.main h3 {
-    margin: 0 auto;
-    padding: 0;
-    padding-left: 30px;
-    text-align: left;
-    color: white;
-}
-
-.home img {
-    object-fit: cover;
-    width: 100%;
-    height: 70%;
-}
-
-.random_frog_container {
-    padding-left: 150px;
-    padding-right: 150px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 75px;
-    margin: 25px 60px;
-    height: 43vh;
-    background-color: #00000000;
-}
-
-.random_frog_item {
-    background-color: #474747;    
-}
-
-.link_container {
-    position: relative;
-}
-
-.home h4 {
-    margin: 0;
-    padding-top: 0;
-    padding-left: 10px;
-    text-align: left;
-    font-size: 20px;
-}
-
-.home a {
-    padding-left: 15px;
-    text-align: left;
-    color: #cfcfcf;
-    text-decoration: none;
-}
-
-.home a:hover {
-    color: #ffffff;
-}
-
-.home a::before {
-    content: '';
-    display: block;
-    height: 3px;
-    background-color: #cfcfcf;
-    margin-left: 15px;
-    position: absolute;
-    bottom: 0px;
-    width: 0px;
-
-    transition: all ease-in-out 250ms;
-}
-
-.home a:hover::before {
-    width: 85px;
-}
-
-.discover {
-    padding-top: 0px;
-    padding-left: 30px;
-    margin: 0 auto;
-
-    text-align: left;
-    font-size: 55px;
-    color: white;
-}
-
-/**frog page**/
+/**frog pag
+-------------------------------------------------------------------------**/
 
 .info_container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-left: 300px;
-    margin-right: 400px;
+    grid-template-columns: 2fr 1fr;
     padding: 100px;
+    padding-top: 0px;
+    margin: 0 15%;
+    justify-content: center;
 }
 
 .title {
@@ -333,21 +351,37 @@ nav a:hover::before {
 }
 
 .info_container img {
-    width: 500px;
-    height: 400px;
-    float:left
+    object-fit: cover;
+    width: 100%;
+    height: 410px;
+    
 }
 
 .info{
     padding-left: 20px;
     margin-left: 20px;
+    background-color: #474747;
 }
 
-.info a {
-    font-size: 25px;
 
+
+.info p {
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+    color: #cfcfcf;
+}
+
+.info h2 {
+    font-size: 20px;
+    padding: 0;
+    margin-bottom: 4px;
 }
 
 .description {
-    margin: 100px;
+    font-size: 16px;
+    line-height: 1.8;
+    padding: 30px;
+    grid-column: span 2;
+    background-color: #474747;
 }

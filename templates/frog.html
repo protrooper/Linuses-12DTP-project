@@ -15,41 +15,39 @@
     
 
     <div class = "info">
+        <h2>Size:</h2>
         {%if frog[5] != 0 %}
-            <p>size: {{frog[5]}}-{{frog[6]}} cm</p>
+            <p>{{frog[5]}}-{{frog[6]}} cm</p>
         {%else%}
-            <p>size: {{frog[6]}} cm<p>
+            <p>{{frog[6]}} cm<p>
         {%endif%}
+        
+        <h2>Status:</h2>
+        <p>{{status[1]}}</p>
 
-        <p>status: {{status[1]}}</p>
-
-
+        <h2>Countries:</h2>
         <p>
-            countries:
             {%for item in country %}
                 {{item[1]}}{{ "," if not loop.last }}
             {%endfor%}
         </p>
 
-    
+        <h2>Prey:</h2>
         <p>
-            prey:
             {%for item in prey %}
                 {{item[1]}}{{ "," if not loop.last }}
             {%endfor%}
         </p>
 
-
+        <h2>Predators:</h2>
         <p>
-            predators:
             {%for item in predator %}
                 {{item[1]}}{{ "," if not loop.last }}
             {%endfor%}
         </p>
 
-    
+        <h2>Habitats:</h2>
         <p>
-            habitats:
             {%for item in habitat %}
                 {{item[1]}}{{ "," if not loop.last }}
             {%endfor%}
@@ -57,9 +55,9 @@
 
     </div>
 
-    
+    <p class = "description">{{frog[3]}}</p> 
+
 </div>
 
-<p class = "description">{{frog[3]}}</p> 
 
 {%endblock%}
