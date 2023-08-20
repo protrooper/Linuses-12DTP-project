@@ -2,8 +2,11 @@
 {%block content%}
 
 
+<h1 class="explore">Explore</h1> 
+
 <form method="post">
-    <h2>Country:<input list = "countries" name = "search" maxlength = "20" autocomplete="off">
+    <div class = "input_container">
+    <h2>Country: <input list = "countries" name = "country" maxlength = "20" autocomplete="off"></h2>
     <datalist id = "countries">
         <!--list possible search inputs -->
         {%for item in countries %}
@@ -11,7 +14,7 @@
         {%endfor%}
     </datalist>
 
-    <h2>Habitat:<input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off">
+    <h2>Habitat: <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off"></h2>
     <datalist id = "habitats">
         <!--list possible search inputs -->
         {%for item in habitats %}
@@ -19,7 +22,7 @@
         {%endfor%}
     </datalist>
 
-    <h2>Prey:<input list = "preys" name = "prey" maxlength = "20" autocomplete="off">
+    <h2>Prey: <input list = "preys" name = "prey" maxlength = "20" autocomplete="off"></h2>
     <datalist id = "preys">
         <!--list possible search inputs -->
         {%for item in preys %}
@@ -27,7 +30,7 @@
         {%endfor%}
     </datalist>
 
-    <h2>Predator:<input list = "predators" name = "predator" maxlength = "20" autocomplete="off">
+    <h2>Predator: <input list = "predators" name = "predator" maxlength = "20" autocomplete="off"></h2>
     <datalist id = "predators">
         <!--list possible search inputs -->
         {%for item in predators %}
@@ -35,9 +38,17 @@
         {%endfor%}
     </datalist>   
 
+    <h2>Status: <input list = "status" name = "statuses" maxlength = "20" autocomplete="off"></h2>
+    <datalist id = "status">
+        <!--list possible search inputs -->
+        {%for item in statuses %}
+            <option value= "{{item[1]}}">
+        {%endfor%}
+    </datalist>   
 
-    <input type = "submit" value = "Search">
-    </h2>
+
+    <h2><input type = "submit" value = "Search"></h2>
+    </div>
 </form>
 
 {%endblock%}

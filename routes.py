@@ -85,15 +85,16 @@ def insert_into(data, frogName, tableName, jointTable, id, cur):
 
 
 # searches database for frogs which match the searched criteria, takes parameters from form.
-def search_frogs(country, location, prey, predator):
+def search_frogs(country, location, prey, predator, status):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
     cur.execute('''SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))
         AND id IN (SELECT fid FROM FrogHabitat WHERE hid IN (SELECT id FROM habitat WHERE name LIKE?))
         AND id IN (SELECT fid FROM FrogPrey WHERE pid IN (SELECT id FROM prey WHERE name LIKE?))
-        AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))''',
-        ('%'+ country+'%', '%'+ location+'%', '%'+ prey+'%', '%'+ predator+'%'))
+        AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))
+        AND id IN (SELECT id FROM frogs WHERE status IN(SELECT id FROM statuses WHERE name LIKE?))''',
+        ('%'+ country+'%', '%'+ location+'%', '%'+ prey+'%', '%'+ predator+'%', '%'+status+'%'))
 
     results = cur.fetchall()
     conn.close()
@@ -135,7 +136,7 @@ def explore():
     if request.method == "POST":
         data = dict(request.form)
 
-        results = search_frogs(data['search'], data['habitat'], data['prey'], data['predator'])
+        results = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
         sortedResults = sorted(results, key=lambda frog: frog[1])  # sorts results in alphabetical order, based on name
 
         return render_template("search.html", title="search results", frogs=sortedResults)
@@ -145,11 +146,12 @@ def explore():
         queries = [['SELECT * FROM country'],
                    ['SELECT * FROM habitat'],
                    ['SELECT * FROM prey'],
-                   ['SELECT * FROM predator']]
-        fetchall = [True, True, True, True]
-        countries, habitats, preys, predators = fetch_data(queries, fetchall)
+                   ['SELECT * FROM predator'],
+                   ['SELECT * FROM statuses']]
+        fetchall = [True, True, True, True, True]
+        countries, habitats, preys, predators, statuses = fetch_data(queries, fetchall)
 
-        return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators)
+        return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators, statuses=statuses)
 
 
 @app.route('/all_frogs')
