@@ -136,11 +136,10 @@ def explore():
     if request.method == "POST":
         data = dict(request.form)
 
-        results = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
-        sortedResults = sorted(results, key=lambda frog: frog[1])  # sorts results in alphabetical order, based on name
-
-        return render_template("search.html", title="search results", frogs=sortedResults)
-
+        frogs = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
+        sort_key = request.args.get('sort_key', default='1')
+        return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key)
+        
     else:
         sortedResults = []
         queries = [['SELECT * FROM country'],
@@ -158,7 +157,8 @@ def explore():
 def all_frogs():
     queries = [['SELECT * FROM frogs ORDER BY name']]
     frogs = fetch_data(queries, [True])
-    return render_template("all_frogs.html", frogs=frogs[0])
+    sort_key = request.args.get('sort_key', default='1')
+    return render_template("all_frogs.html", frogs=frogs[0], sort_key=sort_key)
 
 
 @app.route('/frog/<int:id>')

@@ -319,7 +319,16 @@ nav a:hover::before {
     font-weight: 3;
 }
 
-
+.sorting-dropdown {
+    text-align: left;
+    font-size: 20px;
+    margin: 20px 8% 0;
+    height: 35px;
+    border-radius: 4px;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    font-family: "Cormorant garamond", sans-serif;
+    font-weight: 250;
+}
 
 
 
@@ -387,6 +396,7 @@ nav a:hover::before {
     grid-column: span 2;
     background-color: #474747;
 }
+
 
 
 /**EXPLORE PAGE

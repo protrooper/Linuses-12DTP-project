@@ -3,8 +3,13 @@
 
 <div class = "all_frogs">
   <h2>Frogs:</h2>
+  <select class="sorting-dropdown">
+    <option value="1" {%if sort_key == "1"%}selected{% endif %}>Sort by Name</option>
+    <option value="5" {%if sort_key == "5"%}selected{% endif %}>Sort by Size</option>
+    <option value="4" {%if sort_key == "4"%}selected{% endif %}>Sort by Scientific Name</option>
+  </select>
   <div class="grid-container">
-      {%for item in frogs %}
+      {%for item in frogs|sort(attribute=sort_key) %}
           <div class = "grid-item">
             <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
             <a href = "/frog/{{item[0]}}"> {{item[1]}}</a>
@@ -14,5 +19,19 @@
 
   </div>
 </div>
+
+<script>
+  
+  const dropdown = document.querySelector(".sorting-dropdown");
+  dropdown.addEventListener("change", function () {
+    const selectedValue = dropdown.value;
+    var sortKey;
+    
+    sortKey = selectedValue;
+    //reload page with the updated sort_key parameter
+     window.location.search = `?sort_key=${sortKey}`;
+  });
+</script>
+
 
 {%endblock%}
