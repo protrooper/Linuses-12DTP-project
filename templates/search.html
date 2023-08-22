@@ -14,12 +14,14 @@
   <input type="hidden" name="prey" value="{{formData.prey.data }}">
   <input type="hidden" name="predator" value="{{formData.predator.data }}">
   <input type="hidden" name="statuses" value="{{formData.statuses.data }}">
+  <!--new sort key-->
   <select class="sorting-dropdown" name="sort_key">
     <option value="1" {%if sort_key == "1"%}selected{% endif %}>Sort by Name</option>
     <option value="5" {%if sort_key == "5"%}selected{% endif %}>Sort by Size</option>
     <option value="4" {%if sort_key == "4"%}selected{% endif %}>Sort by Scientific Name</option>
   </select>
 </form>
+
   {% if frogs | length != 0 %}
   <div class="grid-container">
       {%for item in frogs|sort(attribute=sort_key) %}
@@ -41,10 +43,7 @@
 <script>
   const dropdown = document.querySelector(".sorting-dropdown");
   dropdown.addEventListener("change", function () {
-    const selectedValue = dropdown.value;
-    var sortKey;
-    
-    sortKey = selectedValue;
+
     var form = document.getElementById("form_data")
     
     form.submit()
