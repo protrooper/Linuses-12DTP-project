@@ -133,11 +133,11 @@ def about():
 
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():
+    sort_key = request.args.get('sort_key', default='1')
     if request.method == "POST":
         data = dict(request.form)
 
         frogs = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
-        sort_key = request.args.get('sort_key', default='1')
         return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key)
         
     else:
@@ -151,6 +151,8 @@ def explore():
         countries, habitats, preys, predators, statuses = fetch_data(queries, fetchall)
 
         return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators, statuses=statuses)
+
+
 
 
 @app.route('/all_frogs')

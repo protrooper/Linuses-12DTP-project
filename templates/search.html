@@ -13,7 +13,7 @@
   </select>
   {% if frogs | length != 0 %}
   <div class="grid-container">
-      {%for item in frogs %}
+      {%for item in frogs|sort(attribute=sort_key) %}
           <div class = "grid-item">
             <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
             <a href = "/frog/{{item[0]}}"> {{item[1]}}</a>
@@ -27,6 +27,7 @@
   {% endif %}
 </div>
 
+
 <script>
   const dropdown = document.querySelector(".sorting-dropdown");
   dropdown.addEventListener("change", function () {
@@ -35,7 +36,9 @@
     
     sortKey = selectedValue;
     //reload page with the updated sort_key parameter
-     window.location.search = `?sort_key=${sortKey}`;
+    //window.location.search = `?sort_key=${sortKey}`;
+    window.location.assign(window.location.href)
+    
   });
 </script>
   
