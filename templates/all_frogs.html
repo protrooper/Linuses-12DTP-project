@@ -29,7 +29,8 @@
     
     sortKey = selectedValue;
     //reload page with the updated sort_key parameter
-     window.location.search = `?sort_key=${sortKey}`;
+    window.history.replaceState({}, '', `?sort_key=${sortKey}`);
+    window.location.reload()
   });
 </script>
 

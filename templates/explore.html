@@ -4,7 +4,7 @@
 
 <h1 class="explore">Explore</h1> 
 
-<form method="post" id="10">
+<form method="post" id="explore">
     <div class = "input_container">
     <h2>Country: <input list = "countries" name = "country" maxlength = "20" autocomplete="off"></h2>
     <datalist id = "countries">
@@ -46,6 +46,8 @@
         {%endfor%}
     </datalist>   
 
+    <!--default sort key-->
+    <input type="hidden" name="statuses" value="1">
 
     <h2><input type = "submit" value = "Search"></h2>
     </div>

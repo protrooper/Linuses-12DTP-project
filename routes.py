@@ -133,12 +133,12 @@ def about():
 
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():
-    sort_key = request.args.get('sort_key', default='1')
     if request.method == "POST":
         data = dict(request.form)
 
         frogs = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
-        return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key)
+        sort_key = request.form.get('sort_key')
+        return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key, formData = data)
         
     else:
         sortedResults = []
@@ -237,7 +237,6 @@ def insert():
         if status == "fail":
             im.close()
             os.remove(path)
-
 
         return render_template("success.html", title=status, status=status, reason=reason)
 

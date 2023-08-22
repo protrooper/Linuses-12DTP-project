@@ -6,11 +6,20 @@
   <div class = "back_button">
     <a href = "javascript:history.back()"> ←Back</a>
   </div>
-  <select class="sorting-dropdown">
+
+  <!--datafrompreviousform-->
+<form method = "POST" id="form_data">
+  <input type="hidden" name="country" value="{{formData.country.data }}">
+  <input type="hidden" name="habitat" value="{{formData.habitat.data }}">
+  <input type="hidden" name="prey" value="{{formData.prey.data }}">
+  <input type="hidden" name="predator" value="{{formData.predator.data }}">
+  <input type="hidden" name="statuses" value="{{formData.statuses.data }}">
+  <select class="sorting-dropdown" name="sort_key">
     <option value="1" {%if sort_key == "1"%}selected{% endif %}>Sort by Name</option>
     <option value="5" {%if sort_key == "5"%}selected{% endif %}>Sort by Size</option>
     <option value="4" {%if sort_key == "4"%}selected{% endif %}>Sort by Scientific Name</option>
   </select>
+</form>
   {% if frogs | length != 0 %}
   <div class="grid-container">
       {%for item in frogs|sort(attribute=sort_key) %}
@@ -28,6 +37,7 @@
 </div>
 
 
+
 <script>
   const dropdown = document.querySelector(".sorting-dropdown");
   dropdown.addEventListener("change", function () {
@@ -35,10 +45,13 @@
     var sortKey;
     
     sortKey = selectedValue;
-    //reload page with the updated sort_key parameter
-    //window.location.search = `?sort_key=${sortKey}`;
-    window.location.assign(window.location.href)
+    var form = document.getElementById("form_data")
     
+    form.submit()
+
+    //user cannot go back 
+    window.history.replaceState({}, '', window.location.href)
+
   });
 </script>
   
