@@ -101,23 +101,29 @@ def search_frogs(country, location, prey, predator, status):
     return results
 
 
-@app.route('/')
-def home():
+# gets any number of random frogs(depending on parameter) 
+def get_random_frog(number: int):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
-    # select random frog to display
+    # Select random frog IDs to display
     cur.execute('SELECT id FROM frogs')   # gets list of possible ids that can be used
     ids = cur.fetchall()
-    randint = random.sample(ids, k=3)   # selects random ids, k= number of ids selected
-    
-    id1, id2, id3 = randint
-    print(id1[0], id2[0], id3[0])
-    cur.execute('SELECT * FROM frogs WHERE id=? OR id=? OR id=? ', (id1[0], id2[0], id3[0]))   # select frog which matches the id
+    random_ids = random.sample(ids, k=number)   # selects random ids, k= number of ids selected
+
+    # make string that goes into sql query, number of parameters = length of random_ids
+    parameters = ', '.join(['?'] * len(random_ids))
+
+    cur.execute(f'SELECT * FROM frogs WHERE id IN ({parameters})', [id[0] for id in random_ids])
     frogs = cur.fetchall()
 
     conn.close()
+    return frogs
 
+
+@app.route('/')
+def home():
+    frogs = get_random_frog(3)
     return render_template("home.html", title="Home", frogs=frogs)
 
 
@@ -131,6 +137,7 @@ def about():
     return render_template("about.html", title="about")
 
 
+# allows user to search for frogs which match a specific criteria
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():
     if request.method == "POST":
@@ -138,7 +145,7 @@ def explore():
 
         frogs = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
         sort_key = request.form.get('sort_key')
-        return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key, formData = data)
+        return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key, formData=data)
         
     else:
         sortedResults = []
@@ -154,15 +161,19 @@ def explore():
 
 
 
-
-@app.route('/all_frogs')
+# displays all the frogs in a 3x3 grid, sorted by name, scientific name or size via sort_key
+@app.route('/all_frogs', methods=['GET', 'POST'])
 def all_frogs():
-    queries = [['SELECT * FROM frogs ORDER BY name']]
+    if request.method == "POST":
+        sort_key = request.form.get('sort_key')
+    else:
+        sort_key = '1'   # default sort_key
+    queries = [['SELECT * FROM frogs']]
     frogs = fetch_data(queries, [True])
-    sort_key = request.args.get('sort_key', default='1')
     return render_template("all_frogs.html", frogs=frogs[0], sort_key=sort_key)
 
 
+# displays information for one specific frog
 @app.route('/frog/<int:id>')
 def frog(id):
     queries = [['SELECT * FROM frogs WHERE id=?', (id,)],
@@ -177,6 +188,7 @@ def frog(id):
     return render_template("frog.html", frog=frog, status=status, country=country, prey=prey, predator=predator, habitat=habitat)
 
 
+# allows user to insert data into database
 @app.route('/insert', methods=['GET', 'POST'])
 def insert():
     queries = [['SELECT * FROM frogs'],
@@ -189,7 +201,6 @@ def insert():
     frogs, statuses, countries, habitats, preys, predators = fetch_data(queries, fetchall)
 
     if request.method == "POST":
-
         # save image to file
         image = request.files['image']
         filename = secure_filename(image.filename)     # makes sure filename can be safely stored, and doesn't break the system.

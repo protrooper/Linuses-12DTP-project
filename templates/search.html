@@ -4,7 +4,7 @@
 <div class = "all_frogs">
   <h2>Results:</h2>
   <div class = "back_button">
-    <a href = "javascript:history.back()"> ←Back</a>
+    <a href = "/explore"> ←Back</a>
   </div>
 
   <!--datafrompreviousform-->
@@ -39,18 +39,12 @@
 </div>
 
 
-
 <script>
   const dropdown = document.querySelector(".sorting-dropdown");
   dropdown.addEventListener("change", function () {
-
     var form = document.getElementById("form_data")
     
     form.submit()
-
-    //user cannot go back 
-    window.history.replaceState({}, '', window.location.href)
-
   });
 </script>
   
