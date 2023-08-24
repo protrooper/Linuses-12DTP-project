@@ -72,7 +72,6 @@ def insertdata(name, sci_name, min_size, max_size, status, image, description, c
 #       jointTable(str): table where id of frog is matched with id of data from tableName
 #       id(str): name of column in joinTable which is to be matched with fid.
 #       cur: cursor for executing queries
-
 def insert_into(data, frogName, tableName, jointTable, id, cur):
     items = set(data)                      # make sure there is no duplicate data,  Denis Otkidach- https://stackoverflow.com/questions/1541797/how-do-i-check-if-there-are-duplicates-in-a-flat-list
     for item in items:
@@ -121,6 +120,7 @@ def get_random_frog(number: int):
     return frogs
 
 
+#home page
 @app.route('/')
 def home():
     frogs = get_random_frog(3)
@@ -148,6 +148,7 @@ def explore():
         return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key, formData=data)
         
     else:
+        frogs = get_random_frog(3)
         sortedResults = []
         queries = [['SELECT * FROM country'],
                    ['SELECT * FROM habitat'],
@@ -157,7 +158,7 @@ def explore():
         fetchall = [True, True, True, True, True]
         countries, habitats, preys, predators, statuses = fetch_data(queries, fetchall)
 
-        return render_template("explore.html", title="Explore", results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators, statuses=statuses)
+        return render_template("explore.html", title="Explore", frogs=frogs, results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators, statuses=statuses)
 
 
 

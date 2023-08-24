@@ -3,9 +3,8 @@
 
 
 <h1 class="explore">Explore</h1> 
-
+<div class = "input_container">
 <form method="post" id="explore">
-    <div class = "input_container">
     <h2>Country: <input list = "countries" name = "country" maxlength = "20" autocomplete="off"></h2>
     <datalist id = "countries">
         <!--list possible search inputs -->
@@ -50,7 +49,22 @@
     <input type="hidden" name="statuses" value="1">
 
     <h2><input type = "submit" value = "Search"></h2>
-    </div>
+
 </form>
+</div>
+
+
+<div class = "discover">
+    <h2>Discover:</h2>
+    <div class = "random_frog_container">
+        {%for item in frogs %}
+            <div class = "random_frog_item">
+                <img src = "{{item[2]}}" />
+                <h4>{{item[1]}}</h4>
+                <a href = "/frog/{{item[0]}}"> ☰Learn more</a>
+            </div>
+        {%endfor%}
+    </div>
+</div>
 
 {%endblock%}
