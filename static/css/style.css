@@ -11,16 +11,27 @@ body {
     background: url("background.jpg") center/cover fixed no-repeat;
     color:rgb(255, 255, 255);
     
-
     /**make sure footer stays at bottom 
     https://dev.to/nehalahmadkhan/how-to-make-footer-stick-to-bottom-of-web-page-3i14- **/
     display: flex;
     flex-direction: column;
 }
 
-
 h1 {
-    font-size: 80px;
+    margin: 0;
+    text-align: left;
+    font-size: 70px;
+    padding-left: 8%;
+    padding-top: 40px;
+}
+
+h2 {
+    font-size: 33px;
+}
+
+a {
+    text-decoration: none;
+    color: #cfcfcf;
 }
 
 
@@ -33,7 +44,7 @@ h1 {
 }
 
 header {
-    background-color: #000000;
+    background-color: rgb(26, 26, 26);
 }
 
 /**clearfix
@@ -63,10 +74,7 @@ nav li {
 
 nav a {
     text-align: center;
-    color: #cfcfcf;
-    text-decoration: none;
-    font-size: 16px;
-    text-transform: uppercase;
+    font-size: 19px;
 }
 
 /**link hover animations**/
@@ -93,15 +101,12 @@ nav a:hover::before {
 }
 
 
-
-
-
 /**FOOTER
 -----------------------------------------------------------------**/
 
 .footer {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #474747;
+    background-color: rgb(26, 26, 26);
     text-align: center;
     margin: 0;
     margin-top: auto; /**make sure footer stays at bottom**/
@@ -109,97 +114,68 @@ nav a:hover::before {
 }
 
 
-
-
-
-
 /**HOME PAGE
 -----------------------------------------------------------------**/
 
 .home {
     width: 100%;
-    height: 100%;
+    height: 85vh;
     margin: 0 auto;
     padding: 0px;
-    background-color: #000000;
     padding-bottom: 16%;
+    background: url("home_page.jpg") center/cover scroll no-repeat ;
+    position: relative;
 }
 
-.main {
-    margin: 0 auto;
+
+.home h3 {
+    padding-left: 8%;
+    font-size: 24px;
+}
+
+.content_wrapper {
     width: 100%;
-    height: 750px;
-    padding: 0;
-
-    background: linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(17,25,1,0) 66%), url("home_page.jpg") center/cover scroll no-repeat ;
+    display: flex;
+    justify-content: center;
+    gap: 19px;
+    position: absolute;
+    bottom: 50px;
 }
 
-
-.main h2 {
-    padding-top: 135px;
-    padding-left: 30px;
-    margin: 0;
-    text-align: left;
-    font-size: 80px;
-    color: white;
+.content {
+    background-color: #00000083;
+    width: 23%;
+    padding: 20px;
 }
 
-.main h3 {
-    margin: 0 auto;
-    padding: 0;
-    padding-left: 30px;
-    text-align: left;
-    color: white;
+.button {
+    font-family: "Cormorant garamond", sans-serif;
+    font-size: 20px;
+    color: #cfcfcf;
+    background-color: #00691e;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 100px ;
+    cursor: pointer;
+    margin: 5px 2px;
+    float: left;
+    transition: all ease-in-out 180ms;
 }
 
-
-/**"learn more" link hover animation"**/
-
-.home a:hover {
+.button:hover {
+    background-color: #00421334;
     color: #ffffff;
 }
-
-.home a::before {
-    content: '';
-    display: block;
-    height: 3px;
-    background-color: #cfcfcf;
-    margin-left: 15px;
-    position: absolute;
-    bottom: 0px;
-    width: 0px;
-
-    transition: all ease-in-out 250ms;
-}
-
-.home a:hover::before {
-    width: 85px;
-}
-
-
-
-
-
-
 
 /**all_frogs page
 ----------------------------------------------------------------------------**/
 
-.all_frogs h2 {
-    margin: 0;
-    text-align: left;
-    font-size: 80px;
-    padding-left: 8%;
-    padding-top: 40px;
-}
-
+/**back_button hover animation**/
 .back_button {
     position: relative;
 }
 
 .back_button a {
-    color: #cfcfcf;
-    text-decoration: none;
     margin-top: 0;
     margin-left: 9%;
     padding-top: 20px;
@@ -230,7 +206,8 @@ nav a:hover::before {
     width: 101px;
 }
 
-
+/**grid items 
+for all_frogs and search results pages**/
 
 .grid-item {
   background-color: rgb(43, 43, 43);
@@ -238,7 +215,7 @@ nav a:hover::before {
   transition: all ease-in-out 250ms;
 }
 
-/**hover animation**/
+/**grid item hover animation**/
 .grid-item:hover{
     transform: scale(1.1);
 }
@@ -285,7 +262,6 @@ nav a:hover::before {
 }
 
 
-
 /**frog page
 -------------------------------------------------------------------------**/
 
@@ -329,7 +305,6 @@ nav a:hover::before {
 }
 
 
-
 .info p {
     font-size: 16px;
     padding: 0;
@@ -357,35 +332,34 @@ nav a:hover::before {
 -------------------------------------------------------------------**/
 
 .explore {
-    font-size: 60px;
-    padding: 40px 20px 0;
-    margin: 0 130px;
-    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 60px;
+    row-gap: 200px;
+    margin: 50px 0 200px 8%;
 }
 
-input[type=submit] {
-    font-family: "Cormorant garamond", sans-serif;
-    font-size: 20px;
-    color: #cfcfcf;
-    background-color: #00691e;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px 2px;
-    float: right;
+.input_container .button {
+    float:right;
+}
+
+.inputs {
+    width: 415px;
+    margin: 0;
+    height: 360px;
 }
 
 .input_container {
-    width: 375px;
-    background-color: #474747;
-    padding: 20px;
-    margin: 40px 130px;
-    float: left;
+    padding-top: 40px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(43, 43, 43);
 }
 
-.input_container h2 {
-    margin: 20px;
+.input_container h3 {
+    margin: 19px 20px 23px 40px;
+    font-size: 25px;
+    font-weight: 5;
 }
 
 .input_container input[list] {
@@ -400,9 +374,8 @@ input[type=submit] {
 /**random_frogs**/
 
 .discover {
+    width: 60%;
     margin: 0 ;
-    padding-right: 200px;
-    float: left;
     color: white;
 }
 
@@ -415,32 +388,34 @@ input[type=submit] {
 .random_frog_container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 75px;
-    height: 43vh;
+    grid-gap: 22px;
+    height: 400px;
 }
 
 .random_frog_item {
-    background-color: #474747;    
+    background-color: rgb(43, 43, 43); 
+    transition: all ease-in-out 250ms;
+}
+
+/**hover animations**/
+
+.random_frog_item:hover {
+    transform: scale(1.1);
 }
 
 .link_container {
     position: relative;
 }
 
-.random_frog_container h4 {
+.random_frog_container h3 {
     margin: 0;
     padding-top: 0;
     padding-left: 10px;
     text-align: left;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 4;
 }
 
-.random_frog_container a {
-    padding-left: 15px;
-    text-align: left;
-    color: #cfcfcf;
-    text-decoration: none;
-}
 
 /**INSERT PAGE
 -----------------------------------------------------------------------**/

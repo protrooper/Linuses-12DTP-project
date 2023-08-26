@@ -2,23 +2,41 @@
 {%block content%}
 
 <div class = "home">
-    <div class = "main">
-        <h2>Poisonous frogs</h2>
-        <h3>Frogs are pretty cool i guess</h3>
+
+    <h1>Poisonous frogs</h1>
+    <h3>Frogs are pretty cool i guess</h3>
+
+    <div class ="content_wrapper">
+        <div class = "content">
+            <a href="/all_frogs">
+                <h2>Frogs</h2>
+                <p>over 200 billion frogs to choose from!</p>
+                <button class="button">
+                    Learn More
+                </button>
+            </a>
+        </div>
+
+        <div class = "content">
+            <a href="/explore">
+                <h2>Explore</h2>
+                <p>Find a specific frog</p>
+                <button class="button">
+                    Learn More
+                </button>
+            </a>
+        </div>
+
+        <div class = "content">
+            <a href="/contact">
+                <h2>Frogs</h2>
+                <p>Any questions? Feel free to ask.</p>
+                <button class="button">
+                    Learn More
+                </button>
+            </a>
+        </div>
     </div>
-    <h2 class = "discover">Discover:</h2>
-    <div class = "random_frog_container">
-        {%for item in frogs %}
-            <div class = "random_frog_item">
-                <img src = "{{item[2]}}" />
-                <h4>{{item[1]}}</h4>
-                <div class = "link_container">
-                    <a href = "/frog/{{item[0]}}"> ☰Learn more</a>
-                </div>
-            </div>
-        {%endfor%}
-    </div>
-    
 </div>
 
 

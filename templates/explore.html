@@ -1,69 +1,75 @@
 {%extends "layout.html"%}
 {%block content%}
 
+<h1>Explore</h1>  
+<div class="explore">
+    <div class = "inputs">
+        <h2>Search:</h2> 
+        <div class = "input_container">
+            <form method="post" id="explore">
+                <h3>Country: <input list = "countries" name = "country" maxlength = "20" autocomplete="off"></h3>
+                <datalist id = "countries">
+                    <!--list possible search inputs -->
+                    {%for item in countries %}
+                        <option value= "{{item[1]}}">
+                    {%endfor%}
+                </datalist>
 
-<h1 class="explore">Explore</h1> 
-<div class = "input_container">
-<form method="post" id="explore">
-    <h2>Country: <input list = "countries" name = "country" maxlength = "20" autocomplete="off"></h2>
-    <datalist id = "countries">
-        <!--list possible search inputs -->
-        {%for item in countries %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>
+                <h3>Habitat: <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off"></h3>
+                <datalist id = "habitats">
+                    <!--list possible search inputs -->
+                    {%for item in habitats %}
+                        <option value= "{{item[1]}}">
+                    {%endfor%}
+                </datalist>
 
-    <h2>Habitat: <input list = "habitats" name = "habitat" maxlength = "20" autocomplete="off"></h2>
-    <datalist id = "habitats">
-        <!--list possible search inputs -->
-        {%for item in habitats %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>
+                <h3>Prey: <input list = "preys" name = "prey" maxlength = "20" autocomplete="off"></h3>
+                <datalist id = "preys">
+                    <!--list possible search inputs -->
+                    {%for item in preys %}
+                        <option value= "{{item[1]}}">
+                    {%endfor%}
+                </datalist>
 
-    <h2>Prey: <input list = "preys" name = "prey" maxlength = "20" autocomplete="off"></h2>
-    <datalist id = "preys">
-        <!--list possible search inputs -->
-        {%for item in preys %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>
+                <h3>Predator: <input list = "predators" name = "predator" maxlength = "20" autocomplete="off"></h3>
+                <datalist id = "predators">
+                    <!--list possible search inputs -->
+                    {%for item in predators %}
+                        <option value= "{{item[1]}}">
+                    {%endfor%}
+                </datalist>   
 
-    <h2>Predator: <input list = "predators" name = "predator" maxlength = "20" autocomplete="off"></h2>
-    <datalist id = "predators">
-        <!--list possible search inputs -->
-        {%for item in predators %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>   
+                <h3>Status: <input list = "status" name = "statuses" maxlength = "20" autocomplete="off"></h3>
+                <datalist id = "status">
+                    <!--list possible search inputs -->
+                    {%for item in statuses %}
+                        <option value= "{{item[1]}}">
+                    {%endfor%}
+                </datalist>   
 
-    <h2>Status: <input list = "status" name = "statuses" maxlength = "20" autocomplete="off"></h2>
-    <datalist id = "status">
-        <!--list possible search inputs -->
-        {%for item in statuses %}
-            <option value= "{{item[1]}}">
-        {%endfor%}
-    </datalist>   
+                <!--default sort key-->
+                <input type="hidden" name="statuses" value="1">
 
-    <!--default sort key-->
-    <input type="hidden" name="statuses" value="1">
+                <h3><input type = "submit" value = "Search" class="button"></h3>
 
-    <h2><input type = "submit" value = "Search"></h2>
-
-</form>
-</div>
+            </form>
+        </div>
+    </div>
 
 
-<div class = "discover">
-    <h2>Discover:</h2>
-    <div class = "random_frog_container">
-        {%for item in frogs %}
-            <div class = "random_frog_item">
-                <img src = "{{item[2]}}" />
-                <h4>{{item[1]}}</h4>
-                <a href = "/frog/{{item[0]}}"> ☰Learn more</a>
-            </div>
-        {%endfor%}
+    <div class = "discover">
+        <h2>Discover:</h2>
+        <div class = "random_frog_container">
+            {%for item in frogs %}
+                <div class = "random_frog_item">
+                    <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
+                    <h3>{{item[1]}}</h3>
+                    <div class = "link_container">
+                        <a href = "/frog/{{item[0]}}"> ☰Learn more</a>
+                    </div>
+                </div>
+            {%endfor%}
+        </div>
     </div>
 </div>
 
