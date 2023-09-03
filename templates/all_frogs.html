@@ -5,13 +5,22 @@
   <h1>Frogs:</h1>
   <form method="POST" id="sorting_form">
     <select class="sorting-dropdown" name="sort_key">
-      <option value="1" {%if sort_key == "1"%}selected{% endif %}>Sort by Name</option>
-      <option value="5" {%if sort_key == "5"%}selected{% endif %}>Sort by Size</option>
-      <option value="4" {%if sort_key == "4"%}selected{% endif %}>Sort by Scientific Name</option>
+      <option value="1" {%if sort_key == "1"%}selected{% endif %}>Sort by Name (A-Z)</option>
+      <option value="-1" {%if sort_key == "-1"%}selected{% endif %}>Sort by Name (Z-A)</option>
+      <option value="5" {%if sort_key == "5"%}selected{% endif %}>Sort by Size (Ascending)</option>
+      <option value="-5" {%if sort_key == "-5"%}selected{% endif %}>Sort by Size (Descending)</option>
+      <option value="4" {%if sort_key == "4"%}selected{% endif %}>Sort by Scientific Name (A-Z)</option>
+      <option value="-4" {%if sort_key == "-4"%}selected{% endif %}>Sort by Scientific Name (Z-A)</option>
     </select>
   </form>
   <div class="grid-container">
-      {%for item in frogs|sort(attribute=sort_key) %}
+      <!-- Check if sort key is negative, if it is, frogs are sorted in reverse-->
+      {% if sort_key|int > 0 %}
+        {% set _Reverse = False %}
+      {%else%}
+        {% set _Reverse = True %}
+      {%endif%}
+      {%for item in frogs|sort(attribute=sort_key|int|abs, reverse=_Reverse)%}
           <div class = "grid-item">
             <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
             <a href = "/frog/{{item[0]}}"> {{item[1]}}</a>
@@ -22,6 +31,7 @@
 </div>
 
 <script>
+  //submits form when sorting dropdown is changed
   const dropdown = document.querySelector(".sorting-dropdown");
   dropdown.addEventListener("change", function () {
     var form = document.getElementById("sorting_form")
