@@ -93,7 +93,7 @@ def search_frogs(country, location, prey, predator, status):
         AND id IN (SELECT fid FROM FrogPrey WHERE pid IN (SELECT id FROM prey WHERE name LIKE?))
         AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))
         AND id IN (SELECT id FROM frogs WHERE status IN(SELECT id FROM statuses WHERE name LIKE?))''',
-        ('%'+ country+'%', '%'+ location+'%', '%'+ prey+'%', '%'+ predator+'%', '%'+status+'%'))
+        ('%'+country+'%', '%'+location+'%', '%'+prey+'%', '%'+predator+'%', '%'+status+'%'))
 
     results = cur.fetchall()
     conn.close()
@@ -185,8 +185,10 @@ def frog(id):
                ['SELECT * FROM habitat WHERE id IN(SELECT hid FROM FrogHabitat WHERE fid =?)', (id,)]]
     fetchall = [False, False, True, True, True, True, True]
     frog, status, country, prey, predator, habitat = fetch_data(queries, fetchall)
-
-    return render_template("frog.html", frog=frog, status=status, country=country, prey=prey, predator=predator, habitat=habitat)
+    if frog is None:    # page doesn't exist!
+        return render_template("success.html", title="404", status="404", reason="Page not found")
+    else:
+        return render_template("frog.html", frog=frog, status=status, country=country, prey=prey, predator=predator, habitat=habitat)
 
 
 # allows user to insert data into database
@@ -254,6 +256,12 @@ def insert():
 
     else:
         return render_template("insert_data.html", title="insert_data", frogs=frogs, statuses=statuses, countries=countries, habitats=habitats, preys=preys, predators=predators)
+
+
+#404 page, user is redirected to this page when URL does not exist
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("success.html", title="404", status="404", reason="Page not found")
 
 
 if __name__ == "__main__":

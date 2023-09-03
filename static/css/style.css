@@ -34,6 +34,25 @@ a {
     color: #cfcfcf;
 }
 
+.button {
+    font-family: "Cormorant garamond", sans-serif;
+    font-size: 20px;
+    color: #cfcfcf;
+    background-color: #00691e;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 100px ;
+    cursor: pointer;
+    margin: 5px 2px;
+    float: left;
+    transition: all ease-in-out 180ms;
+}
+
+.button:hover {
+    background-color: #00421334;
+    color: #ffffff;
+}
+
 
 /**NAV BAR
 ---------------------------------------------------------------**/
@@ -127,10 +146,13 @@ nav a:hover::before {
     position: relative;
 }
 
-
-.home h3 {
+.home h2 {
     padding-left: 8%;
     font-size: 24px;
+}
+
+.content h3 {
+    font-size: 26px;
 }
 
 .content_wrapper {
@@ -148,24 +170,11 @@ nav a:hover::before {
     padding: 20px;
 }
 
-.button {
-    font-family: "Cormorant garamond", sans-serif;
-    font-size: 20px;
-    color: #cfcfcf;
-    background-color: #00691e;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 100px ;
-    cursor: pointer;
-    margin: 5px 2px;
-    float: left;
-    transition: all ease-in-out 180ms;
+.content img {
+    width: 80px;
+    height: 80px;
 }
 
-.button:hover {
-    background-color: #00421334;
-    color: #ffffff;
-}
 
 /**all_frogs page
 ----------------------------------------------------------------------------**/
@@ -213,6 +222,8 @@ for all_frogs and search results pages**/
   background-color: rgb(43, 43, 43);
   text-align: center;
   transition: all ease-in-out 250ms;
+  height: 380px;
+  width: 30%;
 }
 
 /**grid item hover animation**/
@@ -221,11 +232,11 @@ for all_frogs and search results pages**/
 }
 
 .grid-container {
-    padding: 110px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-auto-rows: 380px;
-    grid-gap: 42px;
+    padding: 110px 8%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 42px;
 }
 
 .grid-container img {
@@ -239,7 +250,6 @@ for all_frogs and search results pages**/
     text-decoration: none;
     margin: 0;
     font-size: 30px;
-    
 }
 
 .grid-item h3 {
@@ -266,12 +276,13 @@ for all_frogs and search results pages**/
 -------------------------------------------------------------------------**/
 
 .info_container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
     padding: 100px;
     padding-top: 0px;
     margin: 0 15%;
     justify-content: center;
+    gap: 30px;
 }
 
 .title {
@@ -280,6 +291,7 @@ for all_frogs and search results pages**/
 }
 
 .title h2 {
+    padding: 0;
     margin: 0;
     font-size: 60px;
 }
@@ -293,15 +305,17 @@ for all_frogs and search results pages**/
 
 .info_container img {
     object-fit: cover;
-    width: 100%;
+    flex-basis: 60%;
+    flex-grow: 2;
     height: 410px;
-    
 }
 
 .info{
+    flex-basis: auto;
+    flex-grow: 1;
     padding-left: 20px;
-    margin-left: 20px;
     background-color: #474747;
+    height: 410px;
 }
 
 
@@ -322,7 +336,7 @@ for all_frogs and search results pages**/
     font-size: 16px;
     line-height: 1.8;
     padding: 30px;
-    grid-column: span 2;
+    flex-basis: auto;
     background-color: #474747;
 }
 
@@ -339,7 +353,7 @@ for all_frogs and search results pages**/
     margin: 50px 0 200px 8%;
 }
 
-.input_container .button {
+.explore .button {
     float:right;
 }
 
@@ -386,15 +400,29 @@ for all_frogs and search results pages**/
 }
 
 .random_frog_container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 22px;
+    display: flex;
+    gap: 22px;
     height: 400px;
 }
 
 .random_frog_item {
+    width: 30%;
     background-color: rgb(43, 43, 43); 
     transition: all ease-in-out 250ms;
+}
+
+.random_frog_container h3 {
+    padding-left: 10px;
+    font-size: 22px;
+    font-weight: 100;
+    margin: 0;
+}
+
+.random_frog_container h4 {
+    font-style: italic;
+    font-weight: 1;
+    padding-left: 15px;
+    margin: 0;
 }
 
 /**hover animations**/
@@ -403,18 +431,6 @@ for all_frogs and search results pages**/
     transform: scale(1.1);
 }
 
-.link_container {
-    position: relative;
-}
-
-.random_frog_container h3 {
-    margin: 0;
-    padding-top: 0;
-    padding-left: 10px;
-    text-align: left;
-    font-size: 22px;
-    font-weight: 4;
-}
 
 
 /**INSERT PAGE
@@ -425,5 +441,4 @@ for all_frogs and search results pages**/
     background-color: #474747;
     padding: 2% 8% 8%;
     margin: 40px 130px 180px;
-    
 }

@@ -25,10 +25,10 @@
   {% if frogs | length != 0 %}
   <div class="grid-container">
       {%for item in frogs|sort(attribute=sort_key) %}
-          <div class = "grid-item">
-            <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
-            <a href = "/frog/{{item[0]}}"> {{item[1]}}</a>
-            <h3>{{item[4]}}</h3>
+        <div class = "grid-item">
+          <a href = "/frog/{{item[0]}}"><img src = "{{item[2]}}" /></a>  
+          <a href = "/frog/{{item[0]}}"> {{item[1]}}</a>
+          <h3>{{item[4]}}</h3>
         </div>
       {%endfor%}
 

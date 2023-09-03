@@ -1,10 +1,12 @@
 {%extends "layout.html"%}
 {%block content%}
 
-<a href = "/insert"> back</a>
+<div class = "back_button">
+    <a href = "javascript:history.back()"> ←Back</a>
+</div>
 
 <h1>{{status}}</h1>
 
-<h2>{{reason}}</h2>
+<h1>{{reason}}</h1>
 
 {%endblock%}
