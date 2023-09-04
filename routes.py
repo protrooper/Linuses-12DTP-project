@@ -17,7 +17,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # parameters:
 #       queries (list): a list of list/s containing the SQL queries and their parameters
 #       fetchall (list): a list of bool values which determine whether the fetchall is used or not
-
 def fetch_data(queries: list, fetchall: list):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()

@@ -3,7 +3,6 @@
 
 body {
     margin: 0;
-    padding: 0;
     min-height: 100vh;
     font-family: "Cormorant garamond", sans-serif;
     font-weight: 300;
@@ -44,7 +43,7 @@ h1 {
     text-align: left;
     font-size: 70px;
     padding-left: 8%;
-    padding-top: 40px;
+    padding-top: 50px;
 }
 
 h2 {
@@ -79,13 +78,19 @@ a {
 /**NAV BAR
 ---------------------------------------------------------------**/
 
-.container {
-    width: 90%;
+
+#container {
+    width: 100%;
     margin: 0 auto;
+    background: #1a1a1a5d;
+    transition: 0.4s;
 }
 
 header {
-    background-color: rgb(26, 26, 26);
+    position: fixed;
+    top: 0;
+    z-index: 500;
+    width: 100%;
 }
 
 /**clearfix
@@ -95,7 +100,6 @@ header::after {
     display: table;
     clear: both;
 }
-
 
 nav {
     text-align: center;
@@ -162,8 +166,8 @@ nav a:hover::before {
     width: 100%;
     height: 85vh;
     margin: 0 auto;
-    padding: 0px;
-    padding-bottom: 16%;
+    padding: 4% 0;
+    padding-bottom: 6%;
     background: url("home_page.jpg") center/cover scroll no-repeat ;
     position: relative;
 }
@@ -200,6 +204,10 @@ nav a:hover::before {
 
 /**all_frogs page
 ----------------------------------------------------------------------------**/
+
+.all_frogs h2 {
+    padding: 0 8%;
+}
 
 /**back_button hover animation**/
 .back_button {
@@ -245,7 +253,6 @@ for all_frogs and search results pages**/
   text-align: center;
   transition: all ease-in-out 250ms;
   height: 380px;
-  width: 30%;
 }
 
 /**grid item hover animation**/
@@ -255,9 +262,8 @@ for all_frogs and search results pages**/
 
 .grid-container {
     padding: 110px 8%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 42px;
 }
 
@@ -326,13 +332,13 @@ for all_frogs and search results pages**/
 
 .info_container img {
     object-fit: cover;
-    flex-basis: 60%;
-    flex-grow: 2;
+    width: 60%;
+    flex-wrap: 1;
     height: 410px;
 }
 
 .info{
-    flex-basis: auto;
+    width: 30%;
     flex-grow: 1;
     padding-left: 20px;
     background-color: #474747;
@@ -462,4 +468,11 @@ for all_frogs and search results pages**/
     background-color: #474747;
     padding: 2% 8% 8%;
     margin: 40px 130px 180px;
+}
+
+/**ABOUT PAGE
+----------------------------------------------------------------------**/
+
+.about {
+    padding: 0 8%;
 }

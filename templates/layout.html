@@ -6,6 +6,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
         <link rel = "stylesheet" href = "/static/css/style.css">
+
+
     </head>
     <header>
         {%include "header.html"%}
@@ -14,5 +16,18 @@
         <div class = "overlay"></div>
         {%block content%}{%endblock%}
         {%include "footer.html"%}
+
+        <!--fades out nav bar when scrolled  https://www.w3schools.com/howto/howto_js_navbar_shrink_scroll.asp-->
+        <script>
+            window.onscroll = function() {scrollFunction()};
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                    document.getElementById("container").style.background = "#1a1a1a";
+                } else {
+                    document.getElementById("container").style.background = "#1a1a1a5d";
+                }
+            }
+        </script>
     </body>
 </html>
