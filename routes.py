@@ -23,7 +23,9 @@ def fetch_data(queries: list, fetchall: list):
     results = []
 
     for index, query in enumerate(queries):
-        try:                                                 # checks if query[1] index exists, thefourtheye - https://stackoverflow.com/questions/29715501/how-can-i-check-if-a-list-index-exists
+        # checks if query[1] index exists,
+        #  -thefourtheye https://stackoverflow.com/questions/29715501/how-can-i-check-if-a-list-index-exists
+        try:
             cur.execute(query[0], query[1])
         except IndexError:
             cur.execute(query[0])
@@ -39,7 +41,9 @@ def fetch_data(queries: list, fetchall: list):
 
 
 # inserts data into database, takes parameters from form
-def insertdata(name, sci_name, min_size, max_size, status, image, description, countries, habitats, preys, predators):
+def insertdata(name, sci_name, min_size, max_size, status, image,
+               description, countries, habitats, preys, predators):
+    
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
@@ -49,8 +53,10 @@ def insertdata(name, sci_name, min_size, max_size, status, image, description, c
         cur.execute('INSERT INTO statuses (name) VALUES(?)', (status,))
         conn.commit()
 
-    cur.execute('''INSERT INTO frogs (name, scientific_name, min_size, max_size, image, description, status)
-                   VALUES (?, ?, ?, ?, ?, ?, (SELECT id FROM statuses WHERE name =?))''',
+    cur.execute('''
+                INSERT INTO frogs (name, scientific_name, min_size, max_size, image, description, status)
+                VALUES (?, ?, ?, ?, ?, ?, (SELECT id FROM statuses WHERE name =?))
+                ''',
                 (name, sci_name, min_size, max_size, image, description, status))
     conn.commit()
 
@@ -72,14 +78,18 @@ def insertdata(name, sci_name, min_size, max_size, status, image, description, c
 #       id(str): name of column in joinTable which is to be matched with fid.
 #       cur: cursor for executing queries
 def insert_into(data, frogName, tableName, jointTable, id, cur):
-    items = set(data)                      # make sure there is no duplicate data,  Denis Otkidach- https://stackoverflow.com/questions/1541797/how-do-i-check-if-there-are-duplicates-in-a-flat-list
+    # make sure there is no duplicate data,
+    #   Denis Otkidach- https://stackoverflow.com/questions/1541797/how-do-i-check-if-there-are-duplicates-in-a-flat-list
+    items = set(data)
     for item in items:
         # check if data exists in table
         cur.execute(f'SELECT * FROM {tableName} WHERE name =?', (item,))
         if cur.fetchone() is None:
             # if data doesn't exist, add data to table
             cur.execute(f'INSERT INTO {tableName} (name) VALUES (?)', (item,))
-        cur.execute(f'INSERT INTO {jointTable} (fid, {id}) VALUES ((SELECT id FROM frogs WHERE name =?), (SELECT id FROM {tableName} WHERE name=?))', (frogName, item))
+
+        cur.execute(f'INSERT INTO {jointTable} (fid, {id}) VALUES ((SELECT id FROM frogs WHERE name =?), \
+                    (SELECT id FROM {tableName} WHERE name=?))', (frogName, item))
 
 
 # searches database for frogs which match the searched criteria, takes parameters from form.
@@ -87,19 +97,22 @@ def search_frogs(country, location, prey, predator, status):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
-    cur.execute('''SELECT * FROM frogs WHERE id IN (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))
-        AND id IN (SELECT fid FROM FrogHabitat WHERE hid IN (SELECT id FROM habitat WHERE name LIKE?))
-        AND id IN (SELECT fid FROM FrogPrey WHERE pid IN (SELECT id FROM prey WHERE name LIKE?))
-        AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))
-        AND id IN (SELECT id FROM frogs WHERE status IN(SELECT id FROM statuses WHERE name LIKE?))''',
-        ('%'+country+'%', '%'+location+'%', '%'+prey+'%', '%'+predator+'%', '%'+status+'%'))
+    cur.execute('''
+                SELECT * FROM frogs WHERE id IN
+                (SELECT fid FROM FrogCountry WHERE cid IN (SELECT id FROM country WHERE name LIKE ?))
+                AND id IN (SELECT fid FROM FrogHabitat WHERE hid IN (SELECT id FROM habitat WHERE name LIKE?))
+                AND id IN (SELECT fid FROM FrogPrey WHERE pid IN (SELECT id FROM prey WHERE name LIKE?))
+                AND id IN (SELECT fid FROM FrogPredator WHERE pid IN (SELECT id FROM predator WHERE name LIKE?))
+                AND id IN (SELECT id FROM frogs WHERE status IN(SELECT id FROM statuses WHERE name LIKE?))
+                ''',
+                ('%'+country+'%', '%'+location+'%', '%'+prey+'%', '%'+predator+'%', '%'+status+'%'))
 
     results = cur.fetchall()
     conn.close()
     return results
 
 
-# gets any number of random frogs(depending on parameter) 
+# gets any number of random frogs(depending on parameter)
 def get_random_frog(number: int):
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
@@ -119,18 +132,20 @@ def get_random_frog(number: int):
     return frogs
 
 
-#home page
+# home page
 @app.route('/')
 def home():
-    frogs = get_random_frog(3)
-    return render_template("home.html", title="Home", frogs=frogs)
+    frog_count = fetch_data([['SELECT COUNT(*) FROM frogs']], [True])
+    return render_template("home.html", title="Home", frog_count=frog_count[0][0][0])
 
 
+# contact page, displays contact information
 @app.route('/contact')
 def contact():
     return render_template("contact.html", title="contact")
 
 
+# about page
 @app.route('/about')
 def about():
     return render_template("about.html", title="about")
@@ -144,8 +159,10 @@ def explore():
 
         frogs = search_frogs(data['country'], data['habitat'], data['prey'], data['predator'], data['statuses'])
         sort_key = request.form.get('sort_key')
-        return render_template("search.html", title="search results", frogs=frogs, sort_key=sort_key, formData=data)
-        
+
+        return render_template("search.html", title="search results",
+                               frogs=frogs, sort_key=sort_key, formData=data)
+
     else:
         frogs = get_random_frog(3)
         sortedResults = []
@@ -157,8 +174,11 @@ def explore():
         fetchall = [True, True, True, True, True]
         countries, habitats, preys, predators, statuses = fetch_data(queries, fetchall)
 
-        return render_template("explore.html", title="Explore", frogs=frogs, results=sortedResults, countries=countries, habitats=habitats, preys=preys, predators=predators, statuses=statuses)
-
+        return render_template("explore.html",
+                               title="Explore", frogs=frogs,
+                               results=sortedResults, countries=countries,
+                               habitats=habitats, preys=preys,
+                               predators=predators, statuses=statuses)
 
 
 # displays all the frogs in a 3x3 grid, sorted by name, scientific name or size via sort_key
@@ -176,18 +196,24 @@ def all_frogs():
 # displays information for one specific frog
 @app.route('/frog/<int:id>')
 def frog(id):
-    queries = [['SELECT * FROM frogs WHERE id=?', (id,)],
-               ['SELECT * FROM statuses WHERE id IN(SELECT status FROM frogs WHERE id =?)', (id,)],
-               ['SELECT * FROM country WHERE id IN(SELECT cid FROM FrogCountry WHERE fid =?)', (id,)],
-               ['SELECT * FROM prey WHERE id IN(SELECT pid FROM FrogPrey WHERE fid =?)', (id,)],
-               ['SELECT * FROM predator WHERE id IN(SELECT pid FROM FrogPredator WHERE fid =?)', (id,)],
-               ['SELECT * FROM habitat WHERE id IN(SELECT hid FROM FrogHabitat WHERE fid =?)', (id,)]]
-    fetchall = [False, False, True, True, True, True, True]
-    frog, status, country, prey, predator, habitat = fetch_data(queries, fetchall)
-    if frog is None:    # page doesn't exist!
+    try:
+        queries = [['SELECT * FROM frogs WHERE id=?', (id,)],
+                   ['SELECT * FROM statuses WHERE id IN(SELECT status FROM frogs WHERE id =?)', (id,)],
+                   ['SELECT * FROM country WHERE id IN(SELECT cid FROM FrogCountry WHERE fid =?)', (id,)],
+                   ['SELECT * FROM prey WHERE id IN(SELECT pid FROM FrogPrey WHERE fid =?)', (id,)],
+                   ['SELECT * FROM predator WHERE id IN(SELECT pid FROM FrogPredator WHERE fid =?)', (id,)],
+                   ['SELECT * FROM habitat WHERE id IN(SELECT hid FROM FrogHabitat WHERE fid =?)', (id,)]]
+        fetchall = [False, False, True, True, True, True, True]
+        frog, status, country, prey, predator, habitat = fetch_data(queries, fetchall)
+        if frog is None:    # page doesn't exist!
+            return render_template("success.html", title="404", status="404", reason="Page not found")
+        else:
+            return render_template("frog.html",
+                                   frog=frog, status=status,
+                                   country=country, prey=prey,
+                                   predator=predator, habitat=habitat)
+    except OverflowError:
         return render_template("success.html", title="404", status="404", reason="Page not found")
-    else:
-        return render_template("frog.html", frog=frog, status=status, country=country, prey=prey, predator=predator, habitat=habitat)
 
 
 # allows user to insert data into database
@@ -205,14 +231,16 @@ def insert():
     if request.method == "POST":
         # save image to file
         image = request.files['image']
-        filename = secure_filename(image.filename)     # makes sure filename can be safely stored, and doesn't break the system.
+        # make sure filename can be safely stored, and doesn't break the system.
+        filename = secure_filename(image.filename)     
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(path)
 
         status = ""
         reason = ""
 
-        # validates image file, https://stackoverflow.com/questions/889333/how-to-check-if-a-file-is-a-valid-image-file
+        # validates image file,
+        # https://stackoverflow.com/questions/889333/how-to-check-if-a-file-is-a-valid-image-file
         try:
             queries = [['SELECT * FROM frogs WHERE name =?', (request.form.get('name'),)],
                        ['SELECT * FROM frogs WHERE scientific_name =?', (request.form.get('scientificName'),)]]
@@ -254,10 +282,13 @@ def insert():
         return render_template("success.html", title=status, status=status, reason=reason)
 
     else:
-        return render_template("insert_data.html", title="insert_data", frogs=frogs, statuses=statuses, countries=countries, habitats=habitats, preys=preys, predators=predators)
+        return render_template("insert_data.html", title="insert_data",
+                               frogs=frogs, statuses=statuses,
+                               countries=countries, habitats=habitats,
+                               preys=preys, predators=predators)
 
 
-#404 page, user is redirected to this page when URL does not exist
+# 404 page, user is redirected to this page when URL does not exist
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("success.html", title="404", status="404", reason="Page not found")
