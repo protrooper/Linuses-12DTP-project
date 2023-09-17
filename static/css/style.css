@@ -477,3 +477,10 @@ for all_frogs and search results pages**/
     padding: 0 20% 0 8%;
     line-height: 1.8;
 }
+
+/**404 PAGE
+----------------------------------------------------------------------**/
+
+#reason {
+    padding: 0 8%;
+}

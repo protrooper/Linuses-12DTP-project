@@ -247,10 +247,17 @@ def insert():
             fetchall = [False, False]
             name, scientificName = fetch_data(queries, fetchall)
 
+            # resizes image, solution by tomvon
+            # https://stackoverflow.com/questions/273946/how-do-i-resize-an-image-using-pil-and-maintain-its-aspect-ratio
+            basewidth = 500
             im = Image.open(path)
+            wpercent = (basewidth/float(im.size[0]))
+            hsize = int((float(im.size[1])*float(wpercent)))
+            im = im.resize((basewidth, hsize), Image.Resampling.LANCZOS)
+            im.save(path)
 
             if name is None and scientificName is None:
-                # insert data into database
+                # frog does not exist currently, insert data into database
                 insertdata(request.form.get('name'),
                            request.form.get('scientificName'),
                            request.form.get('min_size'),
@@ -265,17 +272,17 @@ def insert():
                 status = "success"
                 im.close()
             else:
-                status = "fail"
+                status = "Fail"
                 reason = "Name or Scientific Name already exists!"
                 print("name or scientific name already exists")
-            
+
         except IOError:
             # image is invalid
-            status = "fail"
+            status = "Fail"
             reason = "Invalid Image"
             print("invalid image")
 
-        if status == "fail":
+        if status == "Fail":
             im.close()
             os.remove(path)
 
