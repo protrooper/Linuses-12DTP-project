@@ -43,7 +43,7 @@ def fetch_data(queries: list, fetchall: list):
 # inserts data into database, takes parameters from form
 def insertdata(name, sci_name, min_size, max_size, status, image,
                description, countries, habitats, preys, predators):
-    
+
     conn = sqlite3.connect('frog.db')
     cur = conn.cursor()
 
@@ -73,7 +73,7 @@ def insertdata(name, sci_name, min_size, max_size, status, image,
 # parameters:
 #       data(list): data to be inserted
 #       frogName(str): name of frog
-#       tableName(str): name of table new data is inserted into 
+#       tableName(str): name of table new data is inserted into
 #       jointTable(str): table where id of frog is matched with id of data from tableName
 #       id(str): name of column in joinTable which is to be matched with fid.
 #       cur: cursor for executing queries
@@ -130,6 +130,17 @@ def get_random_frog(number: int):
 
     conn.close()
     return frogs
+
+
+# makes a unqiue filename incase there are images have the same name
+# https://stackoverflow.com/questions/52497605/how-do-i-rename-a-file-if-it-already-exists-in-python
+def make_unique_filename(filename):
+    base, filext = os.path.splitext(filename)
+    counter = 1
+    while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+        filename = f"{base}_{counter}{filext}"
+        counter += 1
+    return filename
 
 
 # home page
@@ -232,8 +243,10 @@ def insert():
         # save image to file
         image = request.files['image']
         # make sure filename can be safely stored, and doesn't break the system.
-        filename = secure_filename(image.filename)     
-        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        filename = secure_filename(image.filename)
+        unique_filename = make_unique_filename(filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+
         image.save(path)
 
         status = ""

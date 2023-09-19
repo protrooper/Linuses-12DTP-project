@@ -7,13 +7,13 @@
     <a href = "/explore"> ←Back</a>
   </div>
 
-  <!--data from previous form-->
+<!--data from previous form-->
 <form method = "POST" id="form_data">
-  <input type="hidden" name="country" value="{{formData.country.data }}">
-  <input type="hidden" name="habitat" value="{{formData.habitat.data }}">
-  <input type="hidden" name="prey" value="{{formData.prey.data }}">
-  <input type="hidden" name="predator" value="{{formData.predator.data }}">
-  <input type="hidden" name="statuses" value="{{formData.statuses.data }}">
+  <input type="hidden" name="country" value="{{formData.country }}">
+  <input type="hidden" name="habitat" value="{{formData.habitat }}">
+  <input type="hidden" name="prey" value="{{formData.prey }}">
+  <input type="hidden" name="predator" value="{{formData.predator }}">
+  <input type="hidden" name="statuses" value="{{formData.statuses }}">
   <!--new sort key-->
   <select class="sorting-dropdown" name="sort_key">
     <option value="1" {%if sort_key == "1"%}selected{% endif %}>Sort by Name (A-Z)</option>

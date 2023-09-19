@@ -55,6 +55,10 @@ a {
     color: #cfcfcf;
 }
 
+.shifted {
+    margin: 0 8%;
+}
+
 .button {
     font-family: "Cormorant garamond", sans-serif;
     font-size: 20px;
@@ -314,7 +318,7 @@ for all_frogs and search results pages**/
 
 .title {
     text-align: center;
-    padding: 100px;
+    padding: 20px 100px 100px 100px;
 }
 
 .title h2 {
@@ -367,7 +371,10 @@ for all_frogs and search results pages**/
     background-color: #474747;
 }
 
-
+#frog_back {
+    margin-left: 14%;
+    margin-top: 80px;
+}
 
 /**EXPLORE PAGE
 -------------------------------------------------------------------**/
@@ -478,9 +485,3 @@ for all_frogs and search results pages**/
     line-height: 1.8;
 }
 
-/**404 PAGE
-----------------------------------------------------------------------**/
-
-#reason {
-    padding: 0 8%;
-}
