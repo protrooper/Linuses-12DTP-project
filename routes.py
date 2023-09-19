@@ -135,11 +135,14 @@ def get_random_frog(number: int):
 # makes a unqiue filename incase there are images have the same name
 # https://stackoverflow.com/questions/52497605/how-do-i-rename-a-file-if-it-already-exists-in-python
 def make_unique_filename(filename):
+    # splits filename into base and extension
     base, filext = os.path.splitext(filename)
     counter = 1
+    
     while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         filename = f"{base}_{counter}{filext}"
         counter += 1
+
     return filename
 
 
@@ -240,13 +243,12 @@ def insert():
     frogs, statuses, countries, habitats, preys, predators = fetch_data(queries, fetchall)
 
     if request.method == "POST":
-        # save image to file
         image = request.files['image']
         # make sure filename can be safely stored, and doesn't break the system.
         filename = secure_filename(image.filename)
         unique_filename = make_unique_filename(filename)
         path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-
+        # save image to file
         image.save(path)
 
         status = ""
@@ -266,7 +268,7 @@ def insert():
             im = Image.open(path)
             wpercent = (basewidth/float(im.size[0]))
             hsize = int((float(im.size[1])*float(wpercent)))
-            im = im.resize((basewidth, hsize), Image.Resampling.LANCZOS)
+            im = im.resize((basewidth, hsize), resample=Image.BICUBIC)
             im.save(path)
 
             if name is None and scientificName is None:
