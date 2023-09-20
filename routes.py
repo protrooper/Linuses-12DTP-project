@@ -138,7 +138,7 @@ def make_unique_filename(filename):
     # splits filename into base and extension
     base, filext = os.path.splitext(filename)
     counter = 1
-    
+
     while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         filename = f"{base}_{counter}{filext}"
         counter += 1
@@ -220,14 +220,14 @@ def frog(id):
         fetchall = [False, False, True, True, True, True, True]
         frog, status, country, prey, predator, habitat = fetch_data(queries, fetchall)
         if frog is None:    # page doesn't exist!
-            return render_template("success.html", title="404", status="404", reason="Page not found")
+            return render_template("status.html", title="404", status="404", reason="Page not found")
         else:
             return render_template("frog.html",
                                    frog=frog, status=status,
                                    country=country, prey=prey,
                                    predator=predator, habitat=habitat)
     except OverflowError:
-        return render_template("success.html", title="404", status="404", reason="Page not found")
+        return render_template("status.html", title="404", status="404", reason="Page not found")
 
 
 # allows user to insert data into database
@@ -301,7 +301,7 @@ def insert():
             im.close()
             os.remove(path)
 
-        return render_template("success.html", title=status, status=status, reason=reason)
+        return render_template("status.html", title=status, status=status, reason=reason)
 
     else:
         return render_template("insert_data.html", title="insert_data",
@@ -313,7 +313,7 @@ def insert():
 # 404 page, user is redirected to this page when URL does not exist
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("success.html", title="404", status="404", reason="Page not found")
+    return render_template("status.html", title="404", status="404", reason="Page not found")
 
 
 if __name__ == "__main__":
